@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Onboarding Tracker — DEP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a2030;--muted:#58636f;--faint:#8c95a0;
+  --bg:#f5f1ea;--surface:#fffef9;--card:#fff;
+  --line:#e2ddd4;
+  --teal:#0b5c5a;--teal-lt:#e8f3f2;--teal-dk:#083f3d;
+  --amber:#b5601a;--amber-lt:#fdf0e3;
+  --rose:#8a3a45;--rose-lt:#f8ecee;
+  --slate:#3a5088;--slate-lt:#ecf0fa;
+  --green:#2d6e50;--green-lt:#e8f4ee;
+  --purple:#4a3a8a;--purple-lt:#f0ecfa;
+  --r:14px;--rlg:20px
+}
+body{font-family:"Aptos","Segoe UI","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;letter-spacing:-.02em;line-height:1.2;color:var(--ink)}
+p{color:var(--muted)}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.shell{max-width:1160px;margin:0 auto;padding:20px 20px 80px}
+
+.topnav{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:14px 22px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+.brand{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:1.05rem;color:var(--ink)}
+.brand span{color:var(--teal)}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap}
+.nav-link{background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:13px;color:var(--muted);text-decoration:none;transition:all .15s}
+.nav-link:hover{background:var(--teal-lt);color:var(--teal);border-color:var(--teal);text-decoration:none}
+.nav-link.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:28px 32px;margin-bottom:16px}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.hero h1{font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:4px}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px}
+.chip-teal{background:var(--teal-lt);color:var(--teal)}
+.chip-amber{background:var(--amber-lt);color:var(--amber)}
+.chip-slate{background:var(--slate-lt);color:var(--slate)}
+.chip-green{background:var(--green-lt);color:var(--green)}
+.chip-rose{background:var(--rose-lt);color:var(--rose)}
+.chip-purple{background:var(--purple-lt);color:var(--purple)}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.stat-val{font-size:1.6rem;font-weight:700;color:var(--ink);font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;line-height:1}
+.stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-top:4px}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* PHASE TIMELINE */
+.phase-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);overflow:hidden;margin-bottom:16px}
+.phase-step{padding:18px 16px;border-right:1px solid var(--line);position:relative}
+.phase-step:last-child{border-right:none}
+.phase-step.complete{background:linear-gradient(135deg,#eef9f8,#f7fffe)}
+.phase-step.active{background:var(--card);border-top:3px solid var(--teal)}
+.phase-step.not-started{opacity:.55}
+.phase-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;margin-bottom:8px;color:#fff}
+.p1 .phase-num{background:var(--teal)}
+.p2 .phase-num{background:var(--amber)}
+.p3 .phase-num{background:var(--rose)}
+.p4 .phase-num{background:var(--green)}
+.phase-label{font-size:.85rem;font-weight:700;margin-bottom:2px}
+.phase-weeks{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.07em}
+.phase-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px;margin-top:6px}
+.badge-active{background:var(--teal);color:#fff}
+.badge-complete{background:var(--green-lt);color:var(--green)}
+.badge-pending{background:var(--line);color:var(--faint)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-head h3{font-size:1rem;margin:0}
+.card h4{font-size:.9rem;margin-bottom:8px}
+.section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);margin-bottom:10px;display:block}
+
+/* GAP TABLE */
+.gap-list{display:flex;flex-direction:column;gap:10px}
+.gap-item{background:#faf8f3;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.gap-item.high{border-left:3px solid var(--rose)}
+.gap-item.medium{border-left:3px solid var(--amber)}
+.gap-item.closed{border-left:3px solid var(--green);opacity:.7}
+.gap-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.gap-detail{font-size:12px;color:var(--muted);margin-bottom:5px;line-height:1.5}
+.gap-meta{font-size:11px;color:var(--faint)}
+
+/* RELATIONSHIP TABLE */
+.rel-table{width:100%;border-collapse:collapse}
+.rel-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:6px 10px;border-bottom:1px solid var(--line)}
+.rel-table td{padding:9px 10px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
+.rel-table tr:last-child td{border-bottom:none}
+.rel-name{font-weight:600;color:var(--ink)}
+.rel-role{color:var(--muted);font-size:12px}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.dot-complete{background:var(--green)}
+.dot-scheduled{background:var(--amber)}
+.dot-pending{background:#d0cbc2}
+.dot-overdue{background:var(--rose)}
+.priority-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px}
+.pri-w1{background:var(--teal-lt);color:var(--teal)}
+.pri-w2{background:var(--amber-lt);color:var(--amber)}
+.pri-m1{background:var(--slate-lt);color:var(--slate)}
+
+/* READING LIST */
+.reading-list{display:flex;flex-direction:column;gap:8px}
+.reading-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.reading-item.complete{background:var(--green-lt);border-color:#b8dfc8}
+.reading-check{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.reading-check.done{background:var(--green);color:#fff}
+.reading-check.pending{background:var(--line)}
+.reading-title{font-size:13px;color:var(--ink);flex:1}
+.reading-due{font-size:11px;color:var(--faint);white-space:nowrap}
+
+/* OPEN ITEMS */
+.open-list{display:flex;flex-direction:column;gap:8px}
+.open-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.open-item.done{background:var(--green-lt);border-color:#b8dfc8;opacity:.7}
+.open-cb{width:16px;height:16px;border-radius:4px;flex-shrink:0;margin-top:2px;border:2px solid var(--line);background:var(--card)}
+.open-cb.checked{background:var(--green);border-color:var(--green)}
+.open-text{font-size:13px;color:var(--ink);flex:1;line-height:1.5}
+.open-due{font-size:11px;color:var(--faint);white-space:nowrap;margin-top:2px}
+
+/* ACCESS */
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.access-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.access-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.access-dot.ok{background:var(--green)}
+.access-dot.partial{background:var(--amber)}
+.access-dot.pending{background:#d0cbc2}
+.access-name{font-size:13px;font-weight:600;color:var(--ink)}
+.access-note{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* COMPETENCY SIGNALS */
+.comp-list{display:flex;flex-direction:column;gap:8px}
+.comp-item{padding:10px 14px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.comp-item.strong{border-left:3px solid var(--green)}
+.comp-item.early{border-left:3px solid var(--teal)}
+.comp-item.watch{border-left:3px solid var(--amber)}
+.comp-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.comp-note{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* SESSION LOG */
+.session-card{background:#faf8f3;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.session-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.session-num{font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em}
+.session-date{font-size:12px;color:var(--faint)}
+.session-covered{font-size:13px;color:var(--muted);margin-bottom:6px}
+.session-sentiment{font-size:12px;color:var(--ink);font-style:italic;border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+
+/* REFLECTIONS */
+.reflection-list{display:flex;flex-direction:column;gap:10px}
+.reflection-item{padding:12px 14px;background:#faf8f3;border:1px solid var(--line);border-radius:10px}
+.reflection-q{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:5px}
+.reflection-a{font-size:13px;color:var(--ink);line-height:1.55}
+
+/* CHECKPOINT BANNER */
+.checkpoint-banner{background:linear-gradient(135deg,var(--amber-lt),#fff9f3);border:1px solid #e8c99a;border-radius:var(--r);padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.checkpoint-icon{width:40px;height:40px;border-radius:10px;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.checkpoint-text h4{font-size:.95rem;margin-bottom:3px}
+.checkpoint-text p{font-size:13px}
+
+/* FLAG BANNER */
+.flag-banner{background:var(--rose-lt);border:1px solid #e8bfc4;border-radius:var(--r);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.flag-icon{color:var(--rose);font-size:18px;flex-shrink:0}
+.flag-text{font-size:13px;color:var(--rose)}
+
+/* LOADING */
+#loading{text-align:center;padding:60px;color:var(--muted);font-size:14px}
+#content{display:none}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="topnav">
+    <div class="brand">DEP <span>PM Onboarding</span></div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Reference Site</a>
+      <a href="index.html" class="nav-link">All New Hires</a>
+      <a href="#" class="nav-link active" id="nav-name">Loading…</a>
+    </div>
+  </nav>
+
+  <div id="loading">Loading tracker data…</div>
+  <div id="content"></div>
+</div>
+
+<script>
+// Get person ID from URL param: person.html?id=sagar-joshi
+const params = new URLSearchParams(window.location.search);
+const personId = params.get('id');
+
+if (!personId) {
+  document.getElementById('loading').innerHTML = 'No person specified. <a href="index.html">Back to cohort view.</a>';
+} else {
+  fetch('../tracker-data/' + personId + '.json?v=' + Date.now())
+    .then(r => r.json())
+    .then(d => render(d))
+    .catch(() => {
+      document.getElementById('loading').innerHTML = 'Could not load tracker data for "' + personId + '". <a href="index.html">Back to cohort view.</a>';
+    });
+}
+
+function statusDot(s) {
+  if (s === 'complete') return '<span class="status-dot dot-complete"></span>';
+  if (s === 'scheduled') return '<span class="status-dot dot-scheduled"></span>';
+  if (s === 'overdue') return '<span class="status-dot dot-overdue"></span>';
+  return '<span class="status-dot dot-pending"></span>';
+}
+function statusLabel(s) {
+  if (s === 'complete') return 'Complete';
+  if (s === 'scheduled') return 'Scheduled';
+  if (s === 'overdue') return 'Overdue';
+  return 'Not yet';
+}
+function priorityTag(p) {
+  if (p === 'week_1') return '<span class="priority-tag pri-w1">Week 1</span>';
+  if (p === 'week_2') return '<span class="priority-tag pri-w2">Week 2</span>';
+  return '<span class="priority-tag pri-m1">Month 1</span>';
+}
+function accessDot(s) {
+  if (s === 'confirmed') return 'ok';
+  if (s === 'partial') return 'partial';
+  return 'pending';
+}
+function daysAgo(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.round((now - d) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return '1 day ago';
+  return diff + ' days ago';
+}
+function daysUntil(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.round((d - now) / 86400000);
+  if (diff <= 0) return 'Due now';
+  if (diff === 1) return 'In 1 day';
+  return 'In ' + diff + ' days';
+}
+
+function render(d) {
+  document.title = d.name + ' — Onboarding Tracker';
+  document.getElementById('nav-name').textContent = d.name;
+
+  const openCount = (d.open_items || []).filter(i => i.status === 'open').length;
+  const gapCount = (d.knowledge_gaps || []).filter(g => g.status === 'open').length;
+  const relTotal = countRelationships(d.relationships);
+  const relDone = countRelationshipsDone(d.relationships);
+
+  const flags = buildFlags(d);
+
+  let html = '';
+
+  // Flags
+  if (flags.length > 0) {
+    flags.forEach(f => {
+      html += `<div class="flag-banner"><div class="flag-icon">⚑</div><div class="flag-text">${f}</div></div>`;
+    });
+  }
+
+  // Checkpoint banner
+  if (d.next_checkpoint) {
+    html += `
+    <div class="checkpoint-banner">
+      <div class="checkpoint-icon">◎</div>
+      <div class="checkpoint-text">
+        <h4>${d.next_checkpoint_type.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())} Checkpoint — ${formatDate(d.next_checkpoint)}</h4>
+        <p>${daysUntil(d.next_checkpoint)} · Manager should run the structured checkpoint flow in Claude Code before this date.</p>
+      </div>
+    </div>`;
+  }
+
+  // Hero
+  html += `
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>${d.name}</h1>
+        <p style="font-size:14px;margin-top:4px">${d.role} · Manager: ${d.manager}</p>
+        <div class="hero-meta">
+          <span class="chip chip-teal">Phase ${d.current_phase} · Week ${d.current_week}</span>
+          ${d.fast_track ? '<span class="chip chip-amber">Fast Track — 60-day target</span>' : ''}
+          <span class="chip chip-slate">Started ${formatDate(d.start_date)}</span>
+          <span class="chip" style="background:#f0f0f0;color:var(--muted)">Last session: ${d.last_session_date ? daysAgo(d.last_session_date) : 'None yet'}</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // Stats
+  html += `
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-val">${d.session_count}</div>
+      <div class="stat-lbl">Sessions</div>
+      <div class="stat-sub">Last: ${d.last_session_date ? daysAgo(d.last_session_date) : '—'}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">${openCount}</div>
+      <div class="stat-lbl">Open Items</div>
+      <div class="stat-sub">This phase</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">${gapCount}</div>
+      <div class="stat-lbl">Knowledge Gaps</div>
+      <div class="stat-sub">Open</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">${relDone}/${relTotal}</div>
+      <div class="stat-lbl">Relationships</div>
+      <div class="stat-sub">Meetings complete</div>
+    </div>
+  </div>`;
+
+  // Phase timeline
+  html += '<div class="phase-bar">';
+  (d.phase_timeline || []).forEach(p => {
+    const cls = p.status === 'in_progress' ? 'active' : p.status === 'complete' ? 'complete' : 'not-started';
+    const badgeCls = p.status === 'in_progress' ? 'badge-active' : p.status === 'complete' ? 'badge-complete' : 'badge-pending';
+    const badgeLabel = p.status === 'in_progress' ? 'Current' : p.status === 'complete' ? 'Complete' : 'Upcoming';
+    html += `
+    <div class="phase-step p${p.phase} ${cls}">
+      <div class="phase-num">${p.phase}</div>
+      <div class="phase-label">${p.label}</div>
+      <div class="phase-weeks">${p.weeks}</div>
+      <div class="phase-badge ${badgeCls}">${badgeLabel}</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Main grid — gaps + competencies
+  html += '<div class="grid2">';
+
+  // Knowledge gaps
+  html += `
+  <div class="card">
+    <div class="card-head">
+      <h3>Knowledge Gaps</h3>
+      <span class="chip chip-rose">${gapCount} open</span>
+    </div>
+    <div class="gap-list">`;
+  (d.knowledge_gaps || []).forEach(g => {
+    html += `
+    <div class="gap-item ${g.priority} ${g.status === 'closed' ? 'closed' : ''}">
+      <div class="gap-name">${g.gap}</div>
+      <div class="gap-detail">${g.detail}</div>
+      <div class="gap-meta">Raised: ${g.raised_in} · <strong>${g.status}</strong></div>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // Competency signals
+  html += `
+  <div class="card">
+    <div class="card-head"><h3>Competency Signals</h3></div>
+    <div class="comp-list">`;
+  (d.competency_signals || []).forEach(c => {
+    const label = c.signal === 'strong' ? 'Strong signal' : c.signal === 'early' ? 'Early signal' : 'Watch';
+    html += `
+    <div class="comp-item ${c.signal}">
+      <div class="comp-name">${c.competency} <span class="chip chip-${c.signal === 'strong' ? 'green' : c.signal === 'early' ? 'teal' : 'amber'}" style="font-size:10px;padding:2px 7px;margin:0 0 0 6px">${label}</span></div>
+      <div class="comp-note">${c.note}</div>
+    </div>`;
+  });
+  html += '</div></div></div>';
+
+  // Closing reflections
+  if (d.closing_reflections && (d.closing_reflections.most_solid_on || d.closing_reflections.most_uncertain_about)) {
+    html += `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-head"><h3>Phase ${d.current_phase} Reflections</h3><span style="font-size:12px;color:var(--faint)">New hire's own words</span></div>
+      <div class="reflection-list">`;
+    if (d.closing_reflections.most_solid_on) {
+      html += `<div class="reflection-item"><div class="reflection-q">Most solid on</div><div class="reflection-a">${d.closing_reflections.most_solid_on}</div></div>`;
+    }
+    if (d.closing_reflections.most_uncertain_about) {
+      html += `<div class="reflection-item"><div class="reflection-q">Most uncertain about</div><div class="reflection-a">${d.closing_reflections.most_uncertain_about}</div></div>`;
+    }
+    if (d.closing_reflections.unprepared_for) {
+      html += `<div class="reflection-item"><div class="reflection-q">Unprepared for</div><div class="reflection-a">${d.closing_reflections.unprepared_for}</div></div>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Open items + access
+  html += '<div class="grid2">';
+  html += `
+  <div class="card">
+    <div class="card-head"><h3>Open Items</h3><span class="chip chip-amber">${openCount} remaining</span></div>
+    <div class="open-list">`;
+  (d.open_items || []).forEach(i => {
+    const done = i.status === 'done';
+    html += `
+    <div class="open-item ${done ? 'done' : ''}">
+      <div class="open-cb ${done ? 'checked' : ''}"></div>
+      <div style="flex:1">
+        <div class="open-text">${i.item}</div>
+        <div class="open-due">${i.due}</div>
+      </div>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // Tool access
+  html += `
+  <div class="card">
+    <div class="card-head"><h3>Tool Access</h3></div>
+    <div class="access-grid">`;
+  (d.access || []).forEach(a => {
+    html += `
+    <div class="access-item">
+      <div class="access-dot ${accessDot(a.status)}"></div>
+      <div>
+        <div class="access-name">${a.tool}</div>
+        <div class="access-note">${a.note}</div>
+      </div>
+    </div>`;
+  });
+  html += '</div></div></div>';
+
+  // Relationships
+  html += `
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head"><h3>Relationships</h3><span style="font-size:12px;color:var(--faint)">${relDone} of ${relTotal} meetings complete</span></div>
+    <table class="rel-table">
+      <thead><tr><th>Name</th><th>Priority</th><th>Status</th></tr></thead>
+      <tbody>`;
+
+  const relGroups = buildRelGroups(d.relationships);
+  relGroups.forEach(r => {
+    html += `
+    <tr>
+      <td><div class="rel-name">${r.name}</div><div class="rel-role">${r.role || ''}</div></td>
+      <td>${priorityTag(r.priority)}</td>
+      <td>${statusDot(r.status)} ${statusLabel(r.status)}${r.scheduled_date ? '<br><span style="font-size:11px;color:var(--faint)">' + formatDate(r.scheduled_date) + '</span>' : ''}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+
+  // Reading
+  html += `
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head"><h3>Reading Progress</h3></div>
+    <div class="reading-list">`;
+  (d.reading || []).forEach(r => {
+    const done = r.status === 'complete';
+    html += `
+    <div class="reading-item ${done ? 'complete' : ''}">
+      <div class="reading-check ${done ? 'done' : 'pending'}">${done ? '✓' : ''}</div>
+      <div class="reading-title">${r.title}</div>
+      <div class="reading-due">${r.due || ''}</div>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // Session log
+  if (d.session_log && d.session_log.length > 0) {
+    html += `<div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Session Log</h3></div>`;
+    d.session_log.forEach(s => {
+      html += `
+      <div class="session-card">
+        <div class="session-head">
+          <div class="session-num">Session ${s.session}</div>
+          <div class="session-date">${formatDate(s.date)}</div>
+        </div>
+        <div class="session-covered"><strong>Covered:</strong> ${s.covered.join(' · ')}</div>
+        ${s.deferred && s.deferred.length ? '<div class="session-covered" style="margin-top:4px"><strong>Deferred:</strong> ' + s.deferred.join(' · ') + '</div>' : ''}
+        <div class="session-sentiment">${s.sentiment}</div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+
+function formatDate(str) {
+  if (!str) return '';
+  const d = new Date(str + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function buildRelGroups(rel) {
+  if (!rel) return [];
+  const out = [];
+  const add = (name, role, status, priority, scheduled_date) => out.push({ name, role, status, priority, scheduled_date });
+
+  if (rel.product_buddy) add(rel.product_buddy.name, 'Product Buddy', rel.product_buddy.status, rel.product_buddy.priority, rel.product_buddy.scheduled_date);
+  if (rel.engineering_team_lead) add(rel.engineering_team_lead.name, 'Engineering Team Lead', rel.engineering_team_lead.status, rel.engineering_team_lead.priority, rel.engineering_team_lead.scheduled_date);
+  if (rel.engineering_manager) add(rel.engineering_manager.name, 'Engineering Manager', rel.engineering_manager.status, rel.engineering_manager.priority, rel.engineering_manager.scheduled_date);
+  (rel.engineering_team || []).forEach(e => add(e.name, 'Engineer', e.status, e.priority, e.scheduled_date));
+  if (rel.data_architect) add(rel.data_architect.name, 'Data Architect', rel.data_architect.status, rel.data_architect.priority, rel.data_architect.scheduled_date);
+  if (rel.qa_lead) add(rel.qa_lead.name, 'QA Lead', rel.qa_lead.status, rel.qa_lead.priority, rel.qa_lead.scheduled_date);
+  if (rel.prods_ops_partner) add(rel.prods_ops_partner.name, 'PrOps Partner', rel.prods_ops_partner.status, rel.prods_ops_partner.priority, rel.prods_ops_partner.scheduled_date);
+  (rel.dep_pm_peers || []).forEach(p => add(p.name, 'DEP PM Peer', p.status, p.priority, p.scheduled_date));
+  (rel.external_stakeholders || []).forEach(s => add(s.name, s.role, s.status, s.priority, s.scheduled_date));
+  return out;
+}
+
+function countRelationships(rel) {
+  return buildRelGroups(rel).length;
+}
+function countRelationshipsDone(rel) {
+  return buildRelGroups(rel).filter(r => r.status === 'complete').length;
+}
+
+function buildFlags(d) {
+  const flags = [];
+  const overdue = buildRelGroups(d.relationships).filter(r => r.status === 'overdue');
+  if (overdue.length) flags.push('Overdue meetings: ' + overdue.map(r => r.name).join(', ') + ' — manager action required.');
+  const highGaps = (d.knowledge_gaps || []).filter(g => g.priority === 'high' && g.status === 'open');
+  if (highGaps.length >= 3) flags.push(highGaps.length + ' high-priority knowledge gaps still open. Surface in next session.');
+  return flags;
+}
+</script>
+</body>
+</html>

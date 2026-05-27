@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Onboarding Cohort — DEP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a2030;--muted:#58636f;--faint:#8c95a0;
+  --bg:#f5f1ea;--surface:#fffef9;--card:#fff;
+  --line:#e2ddd4;
+  --teal:#0b5c5a;--teal-lt:#e8f3f2;--teal-dk:#083f3d;
+  --amber:#b5601a;--amber-lt:#fdf0e3;
+  --rose:#8a3a45;--rose-lt:#f8ecee;
+  --slate:#3a5088;--slate-lt:#ecf0fa;
+  --green:#2d6e50;--green-lt:#e8f4ee;
+  --purple:#4a3a8a;--purple-lt:#f0ecfa;
+  --r:14px;--rlg:20px
+}
+body{font-family:"Aptos","Segoe UI","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;letter-spacing:-.02em;line-height:1.2;color:var(--ink)}
+p{color:var(--muted)}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+.shell{max-width:1160px;margin:0 auto;padding:20px 20px 80px}
+
+.topnav{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:14px 22px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+.brand{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:1.05rem;color:var(--ink)}
+.brand span{color:var(--teal)}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap}
+.nav-link{background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:13px;color:var(--muted);text-decoration:none;transition:all .15s}
+.nav-link:hover{background:var(--teal-lt);color:var(--teal);border-color:var(--teal);text-decoration:none}
+.nav-link.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:28px 32px;margin-bottom:16px}
+.hero h1{font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:6px}
+
+.chip{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px}
+.chip-teal{background:var(--teal-lt);color:var(--teal)}
+.chip-amber{background:var(--amber-lt);color:var(--amber)}
+.chip-slate{background:var(--slate-lt);color:var(--slate)}
+.chip-green{background:var(--green-lt);color:var(--green)}
+.chip-rose{background:var(--rose-lt);color:var(--rose)}
+
+/* AGGREGATE STATS */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.stat-val{font-size:1.8rem;font-weight:700;color:var(--ink);font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;line-height:1}
+.stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-top:4px}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* PHASE DISTRIBUTION */
+.phase-dist{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.phase-dist h3{font-size:1rem;margin-bottom:14px}
+.dist-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dist-bar{text-align:center}
+.dist-fill-wrap{height:60px;background:#f0ede7;border-radius:6px;overflow:hidden;display:flex;align-items:flex-end;margin-bottom:6px}
+.dist-fill{width:100%;border-radius:6px 6px 0 0;transition:height .3s}
+.dist-label{font-size:12px;font-weight:700;color:var(--ink)}
+.dist-count{font-size:11px;color:var(--faint)}
+
+/* PERSON CARDS */
+.person-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:16px}
+.person-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;cursor:pointer;transition:box-shadow .15s,border-color .15s;text-decoration:none;display:block;color:inherit}
+.person-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:#c0c8d4;text-decoration:none}
+.person-card.has-flags{border-left:3px solid var(--rose)}
+.person-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.person-name{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:1.05rem;color:var(--ink);margin-bottom:2px}
+.person-role{font-size:12px;color:var(--muted)}
+.person-phase{text-align:right}
+.person-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.pstat-val{font-size:1.1rem;font-weight:700;color:var(--ink)}
+.pstat-lbl{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.person-summary{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;padding-top:10px;border-top:1px solid var(--line)}
+.person-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+/* CHECKPOINTS */
+.checkpoint-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.checkpoint-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px}
+.checkpoint-item.soon{border-left:3px solid var(--amber)}
+.cp-icon{width:36px;height:36px;border-radius:9px;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.cp-name{font-size:13px;font-weight:700;color:var(--ink)}
+.cp-detail{font-size:12px;color:var(--muted)}
+.cp-date{margin-left:auto;font-size:12px;color:var(--faint);text-align:right;white-space:nowrap}
+
+/* FLAGS PANEL */
+.flags-panel{background:var(--rose-lt);border:1px solid #e8bfc4;border-radius:var(--r);padding:18px 22px;margin-bottom:16px}
+.flags-panel h3{font-size:.95rem;margin-bottom:10px;color:var(--rose)}
+.flag-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:13px;color:var(--ink)}
+.flag-item:last-child{margin-bottom:0}
+.flag-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;margin-top:6px}
+
+#loading{text-align:center;padding:60px;color:var(--muted);font-size:14px}
+#content{display:none}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="topnav">
+    <div class="brand">DEP <span>PM Onboarding</span></div>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Reference Site</a>
+      <a href="index.html" class="nav-link active">All New Hires</a>
+    </div>
+  </nav>
+
+  <div id="loading">Loading cohort data…</div>
+  <div id="content"></div>
+</div>
+
+<script>
+fetch('../tracker-data/manifest.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(m => {
+    // Load all individual data files
+    const promises = m.cohort.map(p =>
+      fetch('../tracker-data/' + p.id + '.json?v=' + Date.now())
+        .then(r => r.json())
+        .catch(() => null)
+    );
+    return Promise.all(promises).then(people => render(m, people.filter(Boolean)));
+  })
+  .catch(() => {
+    document.getElementById('loading').innerHTML = 'Could not load cohort data.';
+  });
+
+function render(manifest, people) {
+  const active = people.length;
+  const totalGaps = people.reduce((n,p) => n + (p.knowledge_gaps||[]).filter(g=>g.status==='open').length, 0);
+  const totalOpen = people.reduce((n,p) => n + (p.open_items||[]).filter(i=>i.status==='open').length, 0);
+  const checkpoints = people.filter(p => p.next_checkpoint).sort((a,b) => new Date(a.next_checkpoint) - new Date(b.next_checkpoint));
+  const allFlags = buildAllFlags(people);
+
+  let html = '';
+
+  // Flags panel
+  if (allFlags.length > 0) {
+    html += `<div class="flags-panel"><h3>⚑ Items Requiring Attention</h3>`;
+    allFlags.forEach(f => {
+      html += `<div class="flag-item"><div class="flag-dot"></div><div>${f}</div></div>`;
+    });
+    html += '</div>';
+  }
+
+  // Hero
+  html += `
+  <div class="hero">
+    <h1>Active Cohort</h1>
+    <p>DEP Data &amp; Ecosystem PM Onboarding · ${formatDate(manifest._last_updated)}</p>
+  </div>`;
+
+  // Aggregate stats
+  const phaseCounts = [1,2,3,4].map(n => people.filter(p=>p.current_phase===n).length);
+  html += `
+  <div class="stat-row">
+    <div class="stat"><div class="stat-val">${active}</div><div class="stat-lbl">Active</div><div class="stat-sub">New hires in program</div></div>
+    <div class="stat"><div class="stat-val">${totalOpen}</div><div class="stat-lbl">Open Items</div><div class="stat-sub">Across all new hires</div></div>
+    <div class="stat"><div class="stat-val">${totalGaps}</div><div class="stat-lbl">Knowledge Gaps</div><div class="stat-sub">Open across cohort</div></div>
+    <div class="stat"><div class="stat-val">${checkpoints.length}</div><div class="stat-lbl">Checkpoints</div><div class="stat-sub">Coming up</div></div>
+  </div>`;
+
+  // Phase distribution
+  const phaseColors = ['var(--teal)','var(--amber)','var(--rose)','var(--green)'];
+  const phaseLabels = ['Phase 1 · Orient','Phase 2 · Learn','Phase 3 · Execute','Phase 4 · Operate'];
+  const maxCount = Math.max(...phaseCounts, 1);
+  html += `<div class="phase-dist"><h3>Phase Distribution</h3><div class="dist-bars">`;
+  phaseCounts.forEach((c,i) => {
+    const pct = Math.max(c / maxCount * 100, c > 0 ? 15 : 0);
+    html += `
+    <div class="dist-bar">
+      <div class="dist-fill-wrap">
+        <div class="dist-fill" style="height:${pct}%;background:${phaseColors[i]}"></div>
+      </div>
+      <div class="dist-label">${c}</div>
+      <div class="dist-count">${phaseLabels[i]}</div>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // Upcoming checkpoints
+  if (checkpoints.length > 0) {
+    html += '<div class="checkpoint-list">';
+    checkpoints.forEach(p => {
+      const soon = daysUntil(p.next_checkpoint) <= 14;
+      html += `
+      <div class="checkpoint-item ${soon ? 'soon' : ''}">
+        <div class="cp-icon">◎</div>
+        <div>
+          <div class="cp-name">${p.name} — ${(p.next_checkpoint_type||'').replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())}</div>
+          <div class="cp-detail">${p.role} · Manager: ${p.manager}</div>
+        </div>
+        <div class="cp-date">${formatDate(p.next_checkpoint)}<br><span style="color:var(--amber);font-weight:700">${daysUntilLabel(p.next_checkpoint)}</span></div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Person cards
+  html += '<div class="person-grid">';
+  people.forEach(p => {
+    const flags = buildFlags(p);
+    const openCount = (p.open_items||[]).filter(i=>i.status==='open').length;
+    const gapCount = (p.knowledge_gaps||[]).filter(g=>g.status==='open').length;
+    const relTotal = countRelationships(p.relationships);
+    const relDone = countRelationshipsDone(p.relationships);
+    const phaseColors = {1:'teal',2:'amber',3:'rose',4:'green'};
+    const color = phaseColors[p.current_phase] || 'slate';
+    html += `
+    <a class="person-card ${flags.length ? 'has-flags' : ''}" href="person.html?id=${p.id}">
+      <div class="person-top">
+        <div>
+          <div class="person-name">${p.name}</div>
+          <div class="person-role">${p.role}</div>
+        </div>
+        <div class="person-phase">
+          <span class="chip chip-${color}">Phase ${p.current_phase} · Wk ${p.current_week}</span>
+          ${p.fast_track ? '<br><span class="chip chip-amber" style="margin-top:5px;display:inline-block">Fast Track</span>' : ''}
+        </div>
+      </div>
+      <div class="person-meta">
+        <span class="chip" style="background:#f0f0f0;color:var(--muted)">Manager: ${p.manager}</span>
+        <span class="chip" style="background:#f0f0f0;color:var(--muted)">Started ${formatDate(p.start_date)}</span>
+        ${flags.length ? '<span class="chip chip-rose">⚑ ' + flags.length + ' flag' + (flags.length > 1 ? 's' : '') + '</span>' : ''}
+      </div>
+      <div class="person-stats">
+        <div><div class="pstat-val">${p.session_count}</div><div class="pstat-lbl">Sessions</div></div>
+        <div><div class="pstat-val">${openCount}</div><div class="pstat-lbl">Open items</div></div>
+        <div><div class="pstat-val">${relDone}/${relTotal}</div><div class="pstat-lbl">Meetings</div></div>
+      </div>
+      <div class="person-summary">${p.summary_line || ''}</div>
+    </a>`;
+  });
+  html += '</div>';
+
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+
+function formatDate(str) {
+  if (!str) return '';
+  const d = new Date(str + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function daysUntil(dateStr) {
+  return Math.round((new Date(dateStr) - new Date()) / 86400000);
+}
+function daysUntilLabel(dateStr) {
+  const d = daysUntil(dateStr);
+  if (d <= 0) return 'Due now';
+  if (d === 1) return 'In 1 day';
+  return 'In ' + d + ' days';
+}
+function buildFlags(p) {
+  const flags = [];
+  if ((p.knowledge_gaps||[]).filter(g=>g.priority==='high'&&g.status==='open').length >= 3) flags.push('3+ high-priority gaps open');
+  return flags;
+}
+function buildAllFlags(people) {
+  const flags = [];
+  people.forEach(p => {
+    buildFlags(p).forEach(f => flags.push(p.name + ': ' + f));
+  });
+  return flags;
+}
+function buildRelGroups(rel) {
+  if (!rel) return [];
+  const out = [];
+  if (rel.product_buddy) out.push(rel.product_buddy);
+  if (rel.engineering_team_lead) out.push(rel.engineering_team_lead);
+  if (rel.engineering_manager) out.push(rel.engineering_manager);
+  (rel.engineering_team||[]).forEach(e => out.push(e));
+  if (rel.data_architect) out.push(rel.data_architect);
+  if (rel.qa_lead) out.push(rel.qa_lead);
+  if (rel.prods_ops_partner) out.push(rel.prods_ops_partner);
+  (rel.dep_pm_peers||[]).forEach(p => out.push(p));
+  (rel.external_stakeholders||[]).forEach(s => out.push(s));
+  return out;
+}
+function countRelationships(rel) { return buildRelGroups(rel).length; }
+function countRelationshipsDone(rel) { return buildRelGroups(rel).filter(r=>r.status==='complete').length; }
+</script>
+</body>
+</html>

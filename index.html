@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PM Onboarding — DEP Data & Ecosystem @ Athena</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a2030;--muted:#58636f;--faint:#8c95a0;
+  --bg:#f5f1ea;--surface:#fffef9;--card:#fff;
+  --line:#e2ddd4;
+  --teal:#0b5c5a;--teal-lt:#e8f3f2;--teal-dk:#083f3d;
+  --amber:#b5601a;--amber-lt:#fdf0e3;
+  --rose:#8a3a45;--rose-lt:#f8ecee;
+  --slate:#3a5088;--slate-lt:#ecf0fa;
+  --green:#2d6e50;--green-lt:#e8f4ee;
+  --purple:#4a3a8a;--purple-lt:#f0ecfa;
+  --r:14px;--rlg:20px
+}
+body{font-family:"Aptos","Segoe UI","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;letter-spacing:-.02em;line-height:1.2;color:var(--ink)}
+p{color:var(--muted)}
+ul{padding-left:1.1rem;color:var(--muted);line-height:1.75}
+li{margin-bottom:3px}
+strong{color:var(--ink)}
+.shell{max-width:1160px;margin:0 auto;padding:20px 20px 80px}
+
+/* NAV */
+.topnav{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:14px 22px;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+.brand{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:1.05rem;color:var(--ink)}
+.brand span{color:var(--teal)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:13px;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .15s}
+.tab:hover{background:var(--teal-lt);color:var(--teal);border-color:var(--teal)}
+.tab.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* PAGES */
+.page{display:none}.page.on{display:block}
+
+/* SHARED */
+.eye{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--teal);display:block;margin-bottom:7px}
+.section-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);margin-bottom:10px;display:block}
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);padding:30px 32px;margin-bottom:16px}
+.hero h1{font-size:clamp(1.6rem,3vw,2.5rem);margin-bottom:10px}
+.hero p{font-size:15px;max-width:none}
+.banner{background:linear-gradient(135deg,var(--teal-lt),var(--surface));border:1px solid #c2dedd;border-radius:var(--r);padding:22px 26px;margin-bottom:16px}
+.banner h3{margin-bottom:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.card h3,.card h4{margin-bottom:8px}
+.card h3{font-size:1.05rem}
+.card h4{font-size:.95rem}
+.card p,.card ul{font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.chip{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.chip-teal{background:var(--teal-lt);color:var(--teal)}
+.chip-slate{background:var(--slate-lt);color:var(--slate)}
+.chip-amber{background:var(--amber-lt);color:var(--amber)}
+.chip-rose{background:var(--rose-lt);color:var(--rose)}
+.chip-green{background:var(--green-lt);color:var(--green)}
+.chip-purple{background:var(--purple-lt);color:var(--purple)}
+
+/* NORTHSTAR */
+.northstar{display:grid;grid-template-columns:80px 1fr;gap:18px;align-items:center;background:linear-gradient(135deg,#eef9f8,#f7fffe);border:2px solid var(--teal);border-radius:20px;padding:20px 22px;margin-bottom:16px}
+.northstar-icon{width:80px;height:80px;border-radius:20px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:#fff}
+.northstar-icon svg{width:38px;height:38px}
+.northstar h3{font-size:1.05rem;margin-bottom:6px;color:var(--teal)}
+.northstar p{font-size:15px;color:#1f5fa8;max-width:none}
+
+/* ROLE CARDS */
+.role-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.role-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.role-card h4{font-size:.95rem;margin-bottom:8px}
+.role-card ul{font-size:13px}
+.rc-pm .chip{background:var(--teal-lt);color:var(--teal)}
+.rc-eng .chip{background:var(--slate-lt);color:var(--slate)}
+.rc-ops .chip{background:var(--amber-lt);color:var(--amber)}
+.rc-ux .chip{background:var(--rose-lt);color:var(--rose)}
+
+/* VS ROW */
+.vs-row{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.vs-col.what{border-right:1px solid var(--line);padding-right:18px}
+.vs-col.how{padding-left:18px}
+.vs-col h4{font-size:.9rem;margin-bottom:8px}
+.vs-col ul{font-size:13px}
+.vs-div{text-align:center;font-size:14px;font-weight:700;color:var(--faint);padding:0 8px}
+
+/* COMPETENCIES */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.comp-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.comp-card h3{font-size:1rem;margin-bottom:6px}
+.comp-def{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.clvl-content{font-size:13px;line-height:1.6}
+.lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;display:block}
+.lbl-good{color:var(--green)}
+.lbl-watch{color:var(--amber)}
+.lbl-growth{color:var(--slate)}
+.txt-good{color:var(--green);margin-bottom:8px}
+.txt-watch{color:var(--amber)}
+.txt-growth{color:var(--slate)}
+
+/* LEVEL SELECTOR */
+.lvl-bar{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lvl-bar span{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.lvl-btn{border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:2px solid transparent;opacity:.75;transition:opacity .15s}
+.lvl-btn:hover{opacity:1}
+
+/* CAREER TABLE */
+.career-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);overflow:hidden;margin-bottom:16px}
+.career-table th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:inherit}
+.career-table td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);vertical-align:top;border-right:1px solid var(--line)}
+.career-table td:last-child{border-right:none}
+.career-table tr:last-child td{border-bottom:none}
+.career-table tr.highlight td{background:#f7fcfb}
+.level-name{font-weight:700;color:var(--ink);font-size:13px;margin-bottom:4px}
+.level-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px;margin-top:3px}
+.current-badge{background:#fff3cd;color:#856404;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:6px}
+
+/* LIFECYCLE */
+.flow-hint{text-align:center;font-size:12px;color:var(--faint);margin-bottom:8px}
+.flow-hint span{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.flow-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:1px solid var(--line);border-radius:var(--rlg) var(--rlg) 0 0;overflow:hidden;border-bottom:none}
+.flow-step{padding:18px 14px;border-right:1px solid var(--line);cursor:pointer;transition:background .15s;position:relative;user-select:none}
+.flow-step:last-child{border-right:none}
+.flow-step:hover{background:var(--bg)}
+.flow-step.active{background:#fff}
+.flow-step.active h4{font-weight:700}
+.flow-num{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;margin-bottom:9px;color:#fff}
+.fn1 .flow-num{background:var(--teal)}
+.fn2 .flow-num{background:var(--amber)}
+.fn3 .flow-num{background:var(--rose)}
+.fn4 .flow-num{background:var(--green)}
+.flow-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px;margin-bottom:7px}
+.fn1 .flow-tag{background:var(--teal-lt);color:var(--teal)}
+.fn2 .flow-tag{background:var(--amber-lt);color:var(--amber)}
+.fn3 .flow-tag{background:var(--rose-lt);color:var(--rose)}
+.fn4 .flow-tag{background:var(--green-lt);color:var(--green)}
+.flow-step h4{font-size:.88rem;margin-bottom:5px}
+.flow-step p{font-size:12px}
+.connector{height:4px;background:var(--line);position:relative;overflow:hidden}
+.connector-fill{position:absolute;top:0;left:0;height:100%;width:25%;background:var(--teal);transition:left .2s,background .2s}
+.gov-bar{background:var(--purple-lt);border:1px solid #c5bde8;border-left:1px solid #c5bde8;border-right:1px solid #c5bde8;padding:10px 18px;display:flex;align-items:center;gap:12px}
+.gov-bar-icon{width:26px;height:26px;border-radius:7px;background:var(--purple);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:700;font-size:13px}
+.stage-panel{display:none;background:var(--card);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--rlg) var(--rlg);padding:22px;margin-bottom:14px}
+.stage-panel.on{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.panel-head{grid-column:1/-1;display:flex;align-items:flex-start;gap:14px;margin-bottom:4px}
+.panel-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-weight:700;font-size:13px}
+.panel-head h4{font-size:1.05rem;margin-bottom:5px}
+.panel-head p{font-size:13px;max-width:none}
+.role-block{background:#faf8f3;border:1px solid var(--line);border-radius:12px;padding:14px}
+.role-block h5{font-size:.85rem;margin-bottom:8px}
+.role-block ul{font-size:13px}
+.pm-block{background:linear-gradient(135deg,#eef9f8,#f7fffe);border:2px solid var(--teal);border-radius:12px;padding:14px}
+.pm-lbl{display:inline-block;background:var(--teal);color:#fff;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 8px;border-radius:999px;margin-bottom:8px}
+.pm-block ul{font-size:13px}
+.pm-block ul li::marker{color:var(--teal)}
+.oversight-block{background:linear-gradient(135deg,var(--slate-lt),#f4f6ff);border:1px solid #c5cde8;border-radius:12px;padding:14px}
+.oversight-block h5{font-size:.85rem;margin-bottom:8px;color:var(--slate)}
+.oversight-block ul{font-size:13px}
+.oversight-block ul li::marker{color:var(--slate)}
+.gov-panel{background:var(--purple-lt);border:1px solid #c5bde8;border-radius:0 0 var(--rlg) var(--rlg);padding:18px 22px;margin-bottom:16px}
+.gov-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.gov-col{background:#fff;border-radius:10px;padding:12px;border:1px solid #c5bde8}
+.gov-col strong{font-size:12px;display:block;margin-bottom:4px}
+.gov-col ul{font-size:12px}
+
+/* ONBOARDING */
+.ob-track{display:grid;gap:12px;margin-bottom:16px}
+.ob-row{display:grid;grid-template-columns:130px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;align-items:start}
+.ob-week{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal)}
+.ob-phase{font-size:10px;font-weight:400;color:var(--faint);text-transform:none;letter-spacing:0;display:block;margin-top:2px}
+.ob-content h4{font-size:.95rem;margin-bottom:6px}
+.ob-content ul{font-size:13px}
+.milestone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.milestone-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.milestone-chip{display:inline-flex;padding:5px 10px;border-radius:999px;background:var(--teal-lt);color:var(--teal);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.milestone-card h3{font-size:1rem;margin-bottom:8px}
+.milestone-card p,.milestone-card ul{font-size:13px}
+
+/* PROMO */
+.promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.promo-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.promo-num{width:34px;height:34px;border-radius:10px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-bottom:10px}
+.promo-card h4{font-size:.95rem;margin-bottom:6px}
+.promo-card p{font-size:13px}
+
+/* JUMP NAV */
+.jump-nav{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.jump-btn{border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:1px solid}
+
+/* CTA */
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.cta-card{border-radius:20px;padding:28px 24px;text-align:center}
+.cta-card.nh{background:linear-gradient(135deg,var(--teal-lt),#f0fffe);border:2px solid var(--teal)}
+.cta-card.mgr{background:linear-gradient(135deg,var(--slate-lt),#f0f3ff);border:2px solid var(--slate)}
+.cta-icon{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff}
+.cta-card.nh .cta-icon{background:var(--teal)}
+.cta-card.mgr .cta-icon{background:var(--slate)}
+.cta-card h3{font-size:1.1rem;margin-bottom:8px}
+.cta-card p{font-size:13px;margin-bottom:16px;max-width:none}
+.cta-btn{display:inline-block;padding:10px 22px;border-radius:999px;font-size:13px;font-weight:700;font-family:inherit;border:none;cursor:pointer}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-slate{background:var(--slate);color:#fff}
+
+@media(max-width:900px){
+  .flow-bar,.grid4,.role-row,.comp-grid,.milestone-grid,.promo-grid{grid-template-columns:1fr 1fr}
+  .stage-panel.on,.vs-row,.northstar{grid-template-columns:1fr}
+  .ob-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .comp-grid,.grid2,.grid3,.grid4,.role-row,.milestone-grid,.promo-grid,.cta-grid{grid-template-columns:1fr}
+  .flow-bar{grid-template-columns:1fr 1fr}
+  .topnav{flex-direction:column;align-items:flex-start}
+}
+
+/* ── TRACKER ─────────────────────────────────────── */
+.tr-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.tr-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.tr-stat-val{font-size:1.7rem;font-weight:700;color:var(--ink);font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;line-height:1}
+.tr-stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-top:4px}
+.tr-stat-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── COPY BUTTON ─────────────────────────────────── */
+.copy-cmd-btn{flex-shrink:0;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted);transition:all .15s;white-space:nowrap}
+.copy-cmd-btn:hover{background:var(--teal-lt);color:var(--teal);border-color:var(--teal)}
+.copy-cmd-btn.copied{background:var(--green-lt);color:var(--green);border-color:var(--green)}
+
+/* person selector */
+.tr-person-bar{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tr-person-bar span{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.tr-person-btn{border-radius:999px;padding:6px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--muted);transition:all .15s}
+.tr-person-btn:hover{background:var(--teal-lt);color:var(--teal);border-color:var(--teal)}
+.tr-person-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* views */
+.tr-view{display:none}.tr-view.on{display:block}
+
+/* phase bar */
+.tr-phase-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);overflow:hidden;margin-bottom:16px}
+.tr-phase-step{padding:16px;border-right:1px solid var(--line)}
+.tr-phase-step:last-child{border-right:none}
+.tr-phase-step.tr-active{border-top:3px solid var(--teal)}
+.tr-phase-step.tr-done{background:linear-gradient(135deg,#eef9f8,#f7fffe)}
+.tr-phase-step.tr-future{opacity:.5}
+.tr-phase-num{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;margin-bottom:7px}
+.tr-p1 .tr-phase-num{background:var(--teal)}
+.tr-p2 .tr-phase-num{background:var(--amber)}
+.tr-p3 .tr-phase-num{background:var(--rose)}
+.tr-p4 .tr-phase-num{background:var(--green)}
+.tr-phase-lbl{font-size:.85rem;font-weight:700;margin-bottom:2px}
+.tr-phase-wks{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.tr-phase-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:999px;margin-top:5px}
+.tr-badge-active{background:var(--teal);color:#fff}
+.tr-badge-done{background:var(--green-lt);color:var(--green)}
+.tr-badge-future{background:var(--line);color:var(--faint)}
+
+/* gap items */
+.tr-gap-list,.tr-open-list,.tr-comp-list,.tr-sess-list,.tr-refl-list,.tr-read-list{display:flex;flex-direction:column;gap:8px}
+.tr-gap-item{background:#faf8f3;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tr-gap-item.high{border-left:3px solid var(--rose)}
+.tr-gap-item.medium{border-left:3px solid var(--amber)}
+.tr-gap-item.closed{border-left:3px solid var(--green);opacity:.65}
+.tr-gap-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.tr-gap-detail{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:4px}
+.tr-gap-meta{font-size:11px;color:var(--faint)}
+
+/* relationships */
+.tr-rel-table{width:100%;border-collapse:collapse}
+.tr-rel-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);padding:6px 10px;border-bottom:1px solid var(--line)}
+.tr-rel-table td{padding:8px 10px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+.tr-rel-table tr:last-child td{border-bottom:none}
+.tr-rel-name{font-weight:600;color:var(--ink)}
+.tr-rel-role{color:var(--muted);font-size:11px}
+.tr-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.tr-dot-done{background:var(--green)}
+.tr-dot-sched{background:var(--amber)}
+.tr-dot-pend{background:#d0cbc2}
+.tr-dot-over{background:var(--rose)}
+.tr-pri{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px}
+.tr-pri-w1{background:var(--teal-lt);color:var(--teal)}
+.tr-pri-w2{background:var(--amber-lt);color:var(--amber)}
+.tr-pri-m1{background:var(--slate-lt);color:var(--slate)}
+
+/* reading */
+.tr-read-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.tr-read-item.done{background:var(--green-lt);border-color:#b8dfc8}
+.tr-read-ck{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.tr-read-ck.done{background:var(--green);color:#fff}
+.tr-read-ck.pend{background:var(--line);color:transparent}
+.tr-read-title{font-size:13px;color:var(--ink);flex:1}
+.tr-read-due{font-size:11px;color:var(--faint);white-space:nowrap}
+
+/* open items */
+.tr-open-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.tr-open-item.done{background:var(--green-lt);border-color:#b8dfc8;opacity:.65}
+.tr-open-cb{width:15px;height:15px;border-radius:4px;flex-shrink:0;margin-top:2px;border:2px solid var(--line)}
+.tr-open-cb.checked{background:var(--green);border-color:var(--green)}
+.tr-open-text{font-size:13px;color:var(--ink);flex:1;line-height:1.5}
+.tr-open-due{font-size:11px;color:var(--faint);margin-top:1px}
+
+/* access */
+.tr-access-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tr-access-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.tr-access-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tr-access-dot.ok{background:var(--green)}
+.tr-access-dot.partial{background:var(--amber)}
+.tr-access-dot.pending{background:#d0cbc2}
+.tr-access-name{font-size:13px;font-weight:600;color:var(--ink)}
+.tr-access-note{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* competency */
+.tr-comp-item{padding:10px 14px;border-radius:8px;background:#faf8f3;border:1px solid var(--line)}
+.tr-comp-item.strong{border-left:3px solid var(--green)}
+.tr-comp-item.early{border-left:3px solid var(--teal)}
+.tr-comp-item.watch{border-left:3px solid var(--amber)}
+.tr-comp-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.tr-comp-note{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* session */
+.tr-sess-item{background:#faf8f3;border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.tr-sess-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.tr-sess-num{font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.08em}
+.tr-sess-date{font-size:12px;color:var(--faint)}
+.tr-sess-body{font-size:13px;color:var(--muted);line-height:1.55}
+.tr-sess-sent{font-size:12px;color:var(--ink);font-style:italic;border-top:1px solid var(--line);padding-top:7px;margin-top:7px}
+
+/* reflections */
+.tr-refl-item{padding:12px 14px;background:#faf8f3;border:1px solid var(--line);border-radius:10px}
+.tr-refl-q{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:5px}
+.tr-refl-a{font-size:13px;color:var(--ink);line-height:1.55}
+
+/* checkpoint / flag banners */
+.tr-cp-banner{background:linear-gradient(135deg,var(--amber-lt),#fff9f3);border:1px solid #e8c99a;border-radius:var(--r);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.tr-cp-icon{width:38px;height:38px;border-radius:9px;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.tr-cp-text h4{font-size:.9rem;margin-bottom:2px}
+.tr-cp-text p{font-size:12px}
+.tr-flag-banner{background:var(--rose-lt);border:1px solid #e8bfc4;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--rose)}
+
+/* cohort cards */
+.tr-cohort-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:16px}
+.tr-person-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.tr-person-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.08);border-color:#c0c8d4}
+.tr-person-card.flagged{border-left:3px solid var(--rose)}
+.tr-pcard-name{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;font-size:1.05rem;color:var(--ink);margin-bottom:2px}
+.tr-pcard-role{font-size:12px;color:var(--muted);margin-bottom:10px}
+.tr-pcard-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:10px;border-top:1px solid var(--line);margin-top:10px}
+.tr-pstat-val{font-size:1.1rem;font-weight:700;color:var(--ink)}
+.tr-pstat-lbl{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em}
+.tr-pcard-summary{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;padding-top:10px;border-top:1px solid var(--line)}
+
+/* dist bars */
+.tr-dist-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.tr-dist-bar{text-align:center}
+.tr-dist-wrap{height:54px;background:#f0ede7;border-radius:6px;overflow:hidden;display:flex;align-items:flex-end;margin-bottom:5px}
+.tr-dist-fill{width:100%;border-radius:6px 6px 0 0}
+.tr-dist-lbl{font-size:12px;font-weight:700;color:var(--ink)}
+.tr-dist-sub{font-size:11px;color:var(--faint)}
+
+@media(max-width:700px){.tr-stat-row,.tr-access-grid{grid-template-columns:1fr 1fr}.tr-phase-bar{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.tr-stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="topnav">
+  <div class="brand">DEP Data &amp; Ecosystem <span>PM Onboarding</span></div>
+  <div class="tabs">
+    <button class="tab on" data-page="0" onclick="showPage(0)">The Role</button>
+    <button class="tab" data-page="1" onclick="showPage(1)">Competencies &amp; Expectations</button>
+    <button class="tab" data-page="2" onclick="showPage(2)">Lifecycle &amp; Ownership</button>
+    <button class="tab" data-page="3" onclick="showPage(3)">Your Onboarding</button>
+    <button class="tab" data-page="4" onclick="showPage(4)">Enter the Experience</button>
+    <button class="tab" data-page="5" onclick="showPage(5)">Tracker</button>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- PAGE 0: THE ROLE -->
+<!-- ============================================================ -->
+<div class="page on" id="p0">
+
+  <div class="hero">
+    <span class="eye">The DEP Zone PM Role</span>
+    <h1>What Product Management Means in DEP @ Athena</h1>
+    <p>Before you look at processes, tools, or ceremonies — start here. This page defines what product management actually is at athena, what it specifically means in this zone, and where the boundaries of the role sit.</p>
+  </div>
+
+  <div class="northstar">
+    <div class="northstar-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2l2.35 5.65L20 10l-5.65 2.35L12 18l-2.35-5.65L4 10l5.65-2.35L12 2z"/>
+        <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
+      </svg>
+    </div>
+    <div>
+      <span class="eye">North Star</span>
+      <h3>We exist to make our stakeholders unstoppable</h3>
+      <p>As a platform team, our mission is to build the data, pipeline, reporting, and analytics capabilities that allow every internal and external partner to do their best work — faster, smarter, and with greater confidence.</p>
+    </div>
+  </div>
+
+  <span class="section-lbl">Where DEP fits — what we do, how we operate, and who we support</span>
+
+  <div class="banner" style="margin-bottom:14px">
+    <h3 style="margin-bottom:8px">DEP Data &amp; Ecosystem in one sentence</h3>
+    <p style="max-width:none;font-size:15px;color:var(--ink)">DEP Data &amp; Ecosystem exists to make athena's data, connectivity, and analytics capabilities into reusable platform assets that accelerate onboarding, power workflows, enable partners, and turn data into customer and business value.</p>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:22px 24px;margin-bottom:14px">
+    <span class="section-lbl" style="margin-top:0">Four capability areas</span>
+    <div class="grid4" style="margin-bottom:0">
+      <div style="background:var(--teal-lt);border:1px solid #c2dedd;border-radius:var(--r);padding:16px">
+        <span class="eye" style="margin-bottom:5px">Data Services</span>
+        <p style="font-size:13px;max-width:none">Liberating and standardizing data across networks to power onboarding, migration, population health, VBC, and analytics. Covers imports, migrations, external data pipelines, network data, and shared data assets.</p>
+      </div>
+      <div style="background:var(--slate-lt);border:1px solid #c5cde8;border-radius:var(--r);padding:16px">
+        <span class="eye" style="margin-bottom:5px;color:var(--slate)">Open Ecosystem</span>
+        <p style="font-size:13px;max-width:none">Making athena an open platform where customers, partners, and developers can build and securely run integrated solutions. Covers marketplace, athenaConnect, APIs, identity/access, and external integrations.</p>
+      </div>
+      <div style="background:var(--amber-lt);border:1px solid #e8d0b8;border-radius:var(--r);padding:16px">
+        <span class="eye" style="margin-bottom:5px;color:var(--amber)">Analytics Platform</span>
+        <p style="font-size:13px;max-width:none">Giving customers actionable insights that improve financial, operational, and clinical performance. Covers Data View, reporting, dashboards, analytics delivery, and analytics infrastructure.</p>
+      </div>
+      <div style="background:var(--rose-lt);border:1px solid #e8c8cc;border-radius:var(--r);padding:16px">
+        <span class="eye" style="margin-bottom:5px;color:var(--rose)">Integration Platform</span>
+        <p style="font-size:13px;max-width:none">Reducing manual integration work through self-service, monitoring, automation, and athena-aware tooling. Covers interfaces, EDI, faxing, onboarding, monitoring, self-service tooling, and error automation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:22px 24px;margin-bottom:16px">
+    <span class="section-lbl" style="margin-top:0">How DEP supports the business</span>
+    <div class="grid4" style="margin-bottom:0">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <strong style="font-size:13px">Growth</strong>
+        </div>
+        <p style="font-size:13px;max-width:none">Faster onboarding, easier migrations, marketplace and partner revenue, payer/network products, and sales-demo enablement.</p>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <strong style="font-size:13px">Retention &amp; Customer Value</strong>
+        </div>
+        <p style="font-size:13px;max-width:none">Better reporting, better analytics, better data availability, and smoother workflows inside athenaOne.</p>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--slate);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <strong style="font-size:13px">Operational Scale</strong>
+        </div>
+        <p style="font-size:13px;max-width:none">Automation, self-service, lower turnaround times, fewer manual build tasks, and fewer support cases.</p>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <strong style="font-size:13px">Risk &amp; Platform Durability</strong>
+        </div>
+        <p style="font-size:13px;max-width:none">HITRUST/compliance, data security, patient matching and patient safety, infrastructure modernization, and cost discipline.</p>
+      </div>
+    </div>
+  </div>
+
+  <span class="section-lbl">The PM mandate — three things that never change regardless of level</span>
+  <div class="grid3">
+    <div class="card"><span class="chip chip-teal">Define</span><h4>WHAT to build and WHY</h4><p>PMs define the vision for their area, translate it into a roadmap, and ensure the team always understands the business problem being solved — not just the feature being built.</p></div>
+    <div class="card"><span class="chip chip-slate">Steward</span><h4>R&amp;D investment like a financial manager</h4><p>PMs are accountable for the business outcomes of their products and the return on our R&amp;D investment. Every prioritization decision is a capital allocation decision.</p></div>
+    <div class="card"><span class="chip chip-green">Drive</span><h4>Outcomes, not outputs</h4><p>Features, releases, and launches are outputs. Behaviors, unit economics, adoption, and efficiency gains are outcomes. Shipping is not success. Impact is success.</p></div>
+  </div>
+
+  <span class="section-lbl">Product management vs. agile process — not the same thing</span>
+  <div class="vs-row">
+    <div class="vs-col what"><span class="chip chip-teal">Product Management</span><h4>The WHAT — PM leads this</h4><ul><li>Vision, strategy, and long-term direction</li><li>Roadmap and prioritization rationale</li><li>Customer and stakeholder research</li><li>Problem definition and hypothesis generation</li><li>Value, viability, usability, feasibility</li><li>Unit economics and outcome measurement</li></ul></div>
+    <div class="vs-div">≠</div>
+    <div class="vs-col how"><span class="chip chip-slate">Agile Process</span><h4>The HOW — Engineering leads this</h4><ul><li>Backlog management and sprint planning</li><li>Grooming and velocity tracking</li><li>Testing, deploying, and delivery mechanics</li><li>Technical approach and architecture</li><li>Release cadence and sprint ceremonies</li></ul></div>
+  </div>
+
+  <div class="banner"><h3 style="margin-bottom:8px">Internal customer? Doesn't matter — it's the same job.</h3><p style="max-width:none">Even for our most internal and technical products, the role of PM is still fundamentally to manage the outcomes of the R&amp;D investment. For platform teams, the economics PMs track are operational: unit costs, efficiency rates, required touches, time on task, and NPS/TAT measures.</p></div>
+
+  <span class="section-lbl">What PM owns — and what it shares with partners</span>
+  <div class="role-row" style="grid-template-columns:repeat(5,1fr)">
+    <div class="role-card rc-pm"><span class="chip">Product Manager</span><h4>Owns the vision, the why, and the what</h4><ul><li>Strategic vision for the product area</li><li>Short- and long-term roadmap direction</li><li>Problem clarity and customer context</li><li>Prioritization rationale and roadmap integrity</li><li>Artifact quality — PRDs, epics, stories, AC</li><li>Product readiness at launch</li><li>Success metrics and post-launch accountability</li><li>Stakeholder communication and alignment</li></ul></div>
+    <div class="role-card rc-eng"><span class="chip">Engineering</span><h4>Owns the how and the when</h4><ul><li>Technical feasibility and sequencing</li><li>Implementation quality and technical debt</li><li>Technical risk visibility and readiness</li><li>Root cause and resolution for defects</li><li>Delivery estimates and dependency realities</li></ul></div>
+    <div class="role-card" style="border-color:var(--line)"><span class="chip chip-purple">Architecture</span><h4>Owns the technical direction</h4><ul><li>Overall architecture assessment and design</li><li>Evaluation of flows, pipelines, and technology paths</li><li>Recommendations on build vs. buy vs. integrate decisions</li><li>Technical standards and platform consistency across areas</li><li>Risk identification for architectural choices</li><li>Cross-area dependency and integration design</li></ul></div>
+    <div class="role-card rc-ops"><span class="chip">Product Ops</span><h4>Owns the operating rhythm</h4><ul><li>Cadence, ceremonies, and milestone coordination</li><li>Roadmap tooling, publication, and hygiene</li><li>Release coordination and enablement</li><li>Alpha/beta logistics and feedback loops</li><li>Cross-functional visibility and follow-through</li></ul></div>
+    <div class="role-card rc-ux"><span class="chip">UX / Design</span><h4>Owns the experience quality</h4><ul><li>User research and problem validation</li><li>Interaction design and usability</li><li>Content, helper text, and narrative clarity</li><li>UX review and sign-off before broader rollout</li></ul></div>
+  </div>
+
+</div><!-- /p0 -->
+
+<!-- ============================================================ -->
+<!-- PAGE 1: COMPETENCIES & EXPECTATIONS -->
+<!-- ============================================================ -->
+<div class="page" id="p1">
+
+  <div class="hero">
+    <span class="eye">Competencies &amp; Expectations</span>
+    <h1>Six competencies. Five levels. One bar that rises over time.</h1>
+    <p>These are the six competencies expected of Product Managers in the DEP zone across every level from Associate to Executive Director. Use the level selector to see what each competency looks like at your level, then scroll down for the full career framework.</p>
+  </div>
+
+  <div class="banner"><h3 style="margin-bottom:8px">A note on this zone's bar</h3><p style="max-width:none">The company-wide framework positions strategic thinking as a skill that deepens at Senior Manager. In this zone, we expect PMs to begin developing strategic thinking from day one — because as a platform team, if PMs aren't defining clear product vision and aligning stakeholders around it, no one else will.</p></div>
+
+  <div class="lvl-bar">
+    <span>View level:</span>
+    <button id="cb-a" class="lvl-btn" onclick="setCompLevel('a')" style="background:var(--green-lt);color:var(--green);border-color:var(--green)">Associate</button>
+    <button id="cb-sa" class="lvl-btn" onclick="setCompLevel('sa')" style="background:var(--teal-lt);color:var(--teal);border-color:var(--teal)">Sr. Associate</button>
+    <button id="cb-m" class="lvl-btn" onclick="setCompLevel('m')" style="background:var(--amber);color:#fff;border-color:var(--amber);opacity:1">Manager</button>
+    <button id="cb-sm" class="lvl-btn" onclick="setCompLevel('sm')" style="background:var(--slate-lt);color:var(--slate);border-color:var(--slate)">Sr. Manager</button>
+    <button id="cb-d" class="lvl-btn" onclick="setCompLevel('d')" style="background:var(--rose-lt);color:var(--rose);border-color:var(--rose)">Director / ED</button>
+  </div>
+
+  <div class="comp-grid">
+
+    <div class="comp-card">
+      <span class="chip chip-teal">Competency 1</span>
+      <h3>Curiosity</h3>
+      <p class="comp-def">Actively seeks to understand customers, workflows, pain points, stakeholders, systems, and market context by asking strong questions and investigating assumptions before making decisions.</p>
+      <div id="cc1-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Asks questions and gathers information as directed. Developing the habit of checking assumptions before accepting requests at face value. Learning to distinguish between what a stakeholder asks for and what they actually need.</p></div>
+      <div id="cc1-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Investigates independently within a defined scope. Pulls from multiple sources rather than relying on what's handed to them. Begins forming their own views on what the problem is before solution work begins.</p></div>
+      <div id="cc1-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Pulls signal from multiple sources, probes for root causes, keeps learning even after an initial answer appears obvious. Asks strong questions before entering solutioning.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Accepting surface-level requests at face value or moving into solutioning before the problem is fully understood.</p></div>
+      <div id="cc1-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Generates new insight for the product area. Identifies questions the team hasn't asked yet. Leads thinking on where the product should go based on deep synthesis of customer, market, and competitive signal.</p></div>
+      <div id="cc1-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Drives curiosity as an organizational practice. Builds teams that investigate rather than assume. Synthesizes signal from across the industry and customer base to set strategic direction.</p></div>
+    </div>
+
+    <div class="comp-card">
+      <span class="chip chip-amber">Competency 2</span>
+      <h3>Strategic Thinking</h3>
+      <p class="comp-def">Defines a clear long-term direction for the product area and translates ambiguity into a coherent vision, roadmap, and set of investment choices tied to business and customer outcomes.</p>
+      <div id="cc2-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Understands the concept of product vision but primarily follows direction set by others. Focused on understanding why the current roadmap is prioritized the way it is.</p></div>
+      <div id="cc2-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Begins to connect sprint-level work to the broader roadmap. Can explain what the current release is trying to achieve and why specific features were prioritized.</p></div>
+      <div id="cc2-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Can explain where the area is headed, why it matters, and how current work ladders into that direction. Creates the roadmap and manages what's in and out each release.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Managing a list of requests or releases without a durable product narrative or a clear logic for what moves first.</p></div>
+      <div id="cc2-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Interprets zone and division OKRs into realistic choices for the team. Defines 1–3 year direction. Identifies gotchas ahead of zone leads. Moves from executing the plan to shaping the strategy.</p></div>
+      <div id="cc2-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Owns the 3–5 year vision for the zone. Translates corporate strategy into a multi-year roadmap. Engages at ELT level to influence strategy, not just report on it.</p></div>
+    </div>
+
+    <div class="comp-card">
+      <span class="chip chip-slate">Competency 3</span>
+      <h3>Influence</h3>
+      <p class="comp-def">Aligns teams and stakeholders without formal authority by listening well, building trust, framing tradeoffs clearly, and communicating in ways that move people toward shared decisions and action.</p>
+      <div id="cc3-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Communicates clearly within the immediate team. Developing reliability as the foundation of early credibility.</p></div>
+      <div id="cc3-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Builds working relationships with the scrum team. Earns credibility through consistent preparation and follow-through rather than authority.</p></div>
+      <div id="cc3-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Earns buy-in across engineering, UX, leadership, and partner teams. Can move a decision forward without relying on escalation by default.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Repeating updates without actually changing alignment, or waiting for authority from others to create momentum.</p></div>
+      <div id="cc3-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Influences across zone and sub-division. Executive-level communication and presentation. Leads cross-functional initiatives without direct authority.</p></div>
+      <div id="cc3-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Independently manages ELT-level conversations to secure decisions. Negotiates and manages relationships with clients and prospects. Moves athena as an organization.</p></div>
+    </div>
+
+    <div class="comp-card">
+      <span class="chip chip-rose">Competency 4</span>
+      <h3>Customer &amp; Market Insight</h3>
+      <p class="comp-def">Represents the voice of the customer and the realities of the market by grounding decisions in research, workflow understanding, competitive context, and direct feedback.</p>
+      <div id="cc4-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Consumes research and customer context provided by others. Learning to ask good questions about who the stakeholder is and what workflow they're in.</p></div>
+      <div id="cc4-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Begins gathering direct signal through observation. Can describe the primary stakeholder and their core workflow for assigned areas.</p></div>
+      <div id="cc4-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Can explain who the stakeholder is, what workflow they're in, what pain point exists, and why the problem matters now. Owns 1–2 key measures.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Talking mostly in internal terms or being unable to clearly connect work to real workflow friction.</p></div>
+      <div id="cc4-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Primary POC for clients, partners, and vendors. Owns a portfolio of 5–10 measures. Industry awareness and competitive landscape shape roadmap and strategy.</p></div>
+      <div id="cc4-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Deep awareness of industry trends, market shifts, and competitor activity. Synthesizes the voice of the market into a multi-year product direction.</p></div>
+    </div>
+
+    <div class="comp-card">
+      <span class="chip chip-green">Competency 5</span>
+      <h3>Prioritization &amp; Judgment</h3>
+      <p class="comp-def">Makes sound tradeoff decisions using evidence, context, and clear reasoning; distinguishes urgent from important; and sequences work to balance value, constraints, and long-term health.</p>
+      <div id="cc5-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Follows established prioritization logic. Learning to distinguish between urgent and important requests with guidance.</p></div>
+      <div id="cc5-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Applies RICE and MoSCoW scoring within a defined scope. Begins to make and articulate small tradeoff decisions independently.</p></div>
+      <div id="cc5-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Uses explicit prioritization logic (RICE + MoSCoW), can explain tradeoffs, and keeps the backlog ordered in a way others can follow.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Prioritizing reactively or letting backlog order reflect noise and stakeholder volume rather than judgment.</p></div>
+      <div id="cc5-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Judicious on go/no-go decisions. Widens scope to discovery through sunset. Moves to economic ownership — understanding cost and return implications of prioritization decisions.</p></div>
+      <div id="cc5-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Makes strategic-level tradeoffs across the entire zone portfolio. Balances delivery commitments against long-term platform health and market positioning.</p></div>
+    </div>
+
+    <div class="comp-card">
+      <span class="chip chip-purple">Competency 6</span>
+      <h3>Execution &amp; Outcome Ownership</h3>
+      <p class="comp-def">Turns strategy into clear product artifacts, decisions, and delivery guidance; maintains quality through launch; and stays accountable for whether shipped work produces the intended outcome.</p>
+      <div id="cc6-a" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Associate</span><p class="txt-growth">Completes defined tasks reliably. Learning what "done" actually means beyond code complete — acceptance criteria, readiness, and customer impact.</p></div>
+      <div id="cc6-sa" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Associate</span><p class="txt-growth">Owns sprint-level delivery for assigned stories. Begins closing the loop by checking whether shipped work achieved its intended outcome.</p></div>
+      <div id="cc6-m" class="clvl-content" style="display:block"><span class="lbl lbl-good">What good looks like</span><p class="txt-good">Provides clear artifacts, supports smooth engineering elaboration, owns product readiness separately from technical readiness, and closes the loop with post-launch learning.</p><span class="lbl lbl-watch" style="margin-top:8px">Watch out for</span><p class="txt-watch">Stopping at documentation or treating launch as the finish line.</p></div>
+      <div id="cc6-sm" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Sr. Manager</span><p class="txt-growth">Anticipates leadership needs proactively. Takes responsibility for cross-functional org initiatives. Evangelizes product outcomes when proven.</p></div>
+      <div id="cc6-d" class="clvl-content" style="display:none"><span class="lbl lbl-growth">Director / ED</span><p class="txt-growth">Accountable for outcomes across the entire zone. Defines and tracks the zone scorecard. Connects outcome data to ELT and commercial conversations.</p></div>
+    </div>
+
+  </div><!-- /comp-grid -->
+
+  <div style="height:1px;background:var(--line);margin:28px 0"></div>
+
+  <div class="hero" style="margin-bottom:16px">
+    <span class="eye">Career Growth</span>
+    <h1>The PM career path at athena</h1>
+    <p>Understanding the level framework from day one is not about pressure — it's about orientation. Knowing where you are, what the next level looks like, and how promotions actually work lets you make smarter bets with your time from the start.</p>
+  </div>
+
+  <div class="banner"><h3 style="margin-bottom:8px">How promotions actually work at athena</h3><p style="max-width:none">Promotions are a function of readiness for the next role on a capability and opportunity basis. It is not a function of time and is not assumed to just happen. Your manager serves as a GPS: they can see where you are and where you need to go.</p></div>
+
+  <div class="jump-nav">
+    <span style="font-size:12px;font-weight:700;color:var(--muted)">Jump to:</span>
+    <button class="jump-btn" onclick="jumpLevel('assoc')" style="background:var(--green-lt);color:var(--green);border-color:var(--green)">Associate</button>
+    <button class="jump-btn" onclick="jumpLevel('sr-assoc')" style="background:var(--teal-lt);color:var(--teal);border-color:var(--teal)">Sr. Associate</button>
+    <button class="jump-btn" onclick="jumpLevel('mgr')" style="background:var(--amber-lt);color:var(--amber);border-color:var(--amber)">Manager</button>
+    <button class="jump-btn" onclick="jumpLevel('sr-mgr')" style="background:var(--slate-lt);color:var(--slate);border-color:var(--slate)">Sr. Manager</button>
+    <button class="jump-btn" onclick="jumpLevel('dir')" style="background:var(--rose-lt);color:var(--rose);border-color:var(--rose)">Director</button>
+    <button class="jump-btn" onclick="jumpLevel('ed')" style="background:var(--purple-lt);color:var(--purple);border-color:var(--purple)">Exec. Director</button>
+  </div>
+
+  <table class="career-table">
+    <thead><tr><th>Level</th><th>Scope</th><th>Owns</th><th>Key skills developing</th></tr></thead>
+    <tbody>
+      <tr id="level-assoc"><td><div class="level-name">Associate</div><span class="level-tag" style="background:var(--green-lt);color:var(--green)">Analysis focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What is happening right now?"</div></td><td>Supporting role within a scrum team. Works under close guidance of a senior PM. Narrow, task-level scope.</td><td>Analysis of current state. Documentation of requirements and findings. Data queries and basic reporting. Supports the PM in preparing artifacts and research.</td><td>Quantitative and qualitative research methods. SQL and key analytics tools. Clear written documentation. Structured presentation. Foundational agile and scrum understanding.</td></tr>
+      <tr id="level-sr-assoc"><td><div class="level-name">Sr. Associate</div><span class="level-tag" style="background:var(--teal-lt);color:var(--teal)">Execution focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What is happening this release?"</div></td><td>Operates as Product Owner within one scrum team. Manages day-to-day backlog and sprint execution under PM direction. Begins to own delivery outcomes for defined features.</td><td>Sprint-level execution and backlog health. Story writing and acceptance criteria for assigned work. Ceremony participation. Tracks and reports on sprint-level outcomes.</td><td>Agile SDLC and scrum mechanics. Prototyping and testing support. Requirements gathering. Workflow analysis. Usability analysis basics. Design thinking and UX/UI collaboration.</td></tr>
+      <tr class="highlight" id="level-mgr"><td><div class="level-name">Manager <span class="current-badge">Common entry</span></div><span class="level-tag" style="background:var(--amber-lt);color:var(--amber)">Key results focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What is happening this release — and why?"</div></td><td>80% in release, 20% planning / analysis / reporting. 1–2 scrum teams. Owns the middle of the product lifecycle — requirements through GA and post-GA support. Creates the roadmap and manages what is in and out each release.</td><td>Key results, not just tasks. Clarity of requirements and execution-ready work. 1–2 key measures. Proactively surfaces gotchas and seeks guidance from zone or senior leadership.</td><td>Agile SDLC mastery. Requirements gathering. Workflow analysis. Design thinking and UX collaboration. System analysis. Stakeholder communication and presentation. Influence without authority within the immediate team.</td></tr>
+      <tr id="level-sr-mgr"><td><div class="level-name">Senior Manager</div><span class="level-tag" style="background:var(--slate-lt);color:var(--slate)">Objectives focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What will happen over the next 1–3 years?"</div></td><td>50% in release, 50% planning / analysis. Wider scope from discovery through sunset. Primary POC for clients, partners, vendors. Handles escalations first. Takes responsibility for cross-functional org initiatives.</td><td>Portfolio of 5–10 measures and outcomes. Economic ownership begins. Interprets and contributes to zone and division goals. Identifies gotchas ahead of zone leads. Judicious on go / no-go decisions.</td><td>Strategy development and roadmapping aligned to corporate goals. Generating new product insight. Executive communication and presentation. Influence without authority within and outside the zone. Works through others.</td></tr>
+      <tr id="level-dir"><td><div class="level-name">Director</div><span class="level-tag" style="background:var(--rose-lt);color:var(--rose)">Zone vision focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What will happen over the next 1–3 years?"</div></td><td>Complete ownership of zone — strategy, outcomes, economics, tradeoffs, and people. Manages performance coaching and career planning for staff. Develops, tracks, and manages budget. Leads team of substantial scope (3+ areas).</td><td>3-year vision and plan. Actively involved in sub-division leadership discussions. Cross-product point of contact aligning product strategy across zones. Engages at ELT level for influence and outcomes.</td><td>Inspirational people leadership. Compelling storytelling for area of responsibility. One deep spike area of expertise. Business case development. Great networker who can move the organization.</td></tr>
+      <tr id="level-ed"><td><div class="level-name">Executive Director</div><span class="level-tag" style="background:var(--purple-lt);color:var(--purple)">Enterprise focus</span><div style="font-size:11px;color:var(--faint);margin-top:5px">"What will happen over the next 5 years?"</div></td><td>Represents athena externally. Independently manages ELT-level conversations to secure decisions and resources. Independently generates proposals to steer the business. P&amp;L level engagement. Signs contracts.</td><td>Economic accountability and signing authority. Defining and delivering short- and long-term outcomes. People development at scale. Active in sub-division leadership discussions.</td><td>Influence without authority across sub-divisions. Negotiation and relationship management with clients and prospects. Inspirational people leadership at scale. Business case development and buy-in across the org.</td></tr>
+    </tbody>
+  </table>
+
+  <span class="section-lbl">Three things that drive promotion</span>
+  <div class="promo-grid">
+    <div class="promo-card"><div class="promo-num">1</div><h4>Role — Perform</h4><p>Demonstrate the ability to play the role of the next level while continuing strong performance at your current level. This is about operating at a higher level of accountability and judgment in real situations.</p></div>
+    <div class="promo-card"><div class="promo-num">2</div><h4>Scope — Talk</h4><p>Work with your manager to identify opportunities to operate at next-level scope. Seek vacuums — find areas where the team or company is struggling and pitch in. These are the highest-leverage opportunities to demonstrate next-level skills.</p></div>
+    <div class="promo-card"><div class="promo-num">3</div><h4>Skills — Practice</h4><p>Apply the 80/20 rule: focus on the 20% of contributions that demonstrate 80% of your readiness for the next level. Seek feedback deliberately, apply it in your work, and move toward your strengths over time.</p></div>
+  </div>
+
+</div><!-- /p1 -->
+
+<!-- ============================================================ -->
+<!-- PAGE 2: LIFECYCLE & OWNERSHIP -->
+<!-- ============================================================ -->
+<div class="page" id="p2">
+
+  <div class="hero">
+    <span class="eye">Lifecycle &amp; Ownership</span>
+    <h1>Four stages. Continuous governance. Your role at each one.</h1>
+    <p>Select your level to see what PM is responsible for at each stage, and what your manager is watching for. Click any stage to explore the detail. Backlog and bug governance runs continuously across all four stages as an ongoing discipline.</p>
+  </div>
+
+  <div class="lvl-bar">
+    <span>View for level:</span>
+    <button id="lb-a" class="lvl-btn" onclick="setLCLevel('a')" style="background:var(--green-lt);color:var(--green);border-color:var(--green)">Associate</button>
+    <button id="lb-sa" class="lvl-btn" onclick="setLCLevel('sa')" style="background:var(--teal-lt);color:var(--teal);border-color:var(--teal)">Sr. Associate</button>
+    <button id="lb-m" class="lvl-btn" onclick="setLCLevel('m')" style="background:var(--amber);color:#fff;border-color:var(--amber);opacity:1">Manager</button>
+    <button id="lb-sm" class="lvl-btn" onclick="setLCLevel('sm')" style="background:var(--slate-lt);color:var(--slate);border-color:var(--slate)">Sr. Manager</button>
+    <button id="lb-d" class="lvl-btn" onclick="setLCLevel('d')" style="background:var(--rose-lt);color:var(--rose);border-color:var(--rose)">Director / ED</button>
+  </div>
+
+  <div class="flow-hint"><span>👆 Click any stage to explore PM ownership</span></div>
+
+  <div class="flow-bar">
+    <div class="flow-step fn1 active" onclick="showStage('s1',this,0)"><div class="flow-num">01</div><span class="flow-tag">Strategic Planning</span><h4>Strategic Planning</h4><p>Set high-level direction, vision, and roadmap before build work begins.</p></div>
+    <div class="flow-step fn2" onclick="showStage('s2',this,1)"><div class="flow-num">02</div><span class="flow-tag">Discovery &amp; Definition</span><h4>Discovery &amp; Definition</h4><p>Investigate user problems and define work clearly enough for build to begin.</p></div>
+    <div class="flow-step fn3" onclick="showStage('s3',this,2)"><div class="flow-num">03</div><span class="flow-tag">Execution</span><h4>Execution</h4><p>Produce and validate features. Own product readiness through launch.</p></div>
+    <div class="flow-step fn4" onclick="showStage('s4',this,3)" style="border-right:none"><div class="flow-num">04</div><span class="flow-tag">Measurement &amp; Iteration</span><h4>Measurement &amp; Iteration</h4><p>Evaluate performance against success criteria and iterate.</p></div>
+  </div>
+  <div class="connector"><div class="connector-fill" id="stage-fill"></div></div>
+  <div class="gov-bar">
+    <div class="gov-bar-icon">∞</div>
+    <div><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--purple)">Ongoing — all stages &nbsp;</span><span style="font-size:13px;color:var(--muted)">Continuous Backlog &amp; Bug Governance runs across every stage of the lifecycle, not just at the end</span></div>
+  </div>
+
+  <!-- Stage 1 -->
+  <div id="panel-s1" class="stage-panel on">
+    <div class="panel-head"><div class="panel-badge" style="background:var(--teal)">01</div><div><span class="eye">Strategic Planning</span><h4>Strategic Planning</h4><p>PM sets high-level product direction — defining the vision, connecting it to business outcomes, and building the roadmap that guides all downstream work.</p></div></div>
+    <div class="role-block"><h5>Who owns what</h5><ul><li><strong>PM</strong> — Product vision, strategic roadmap, problem definition, prioritization rationale, stakeholder alignment</li><li><strong>Engineering</strong> — Technical feasibility signals, architecture direction, dependency identification</li><li><strong>Architecture</strong> — Overall architecture assessment, evaluation of technology paths and flows, recommendations on build vs. buy vs. integrate decisions, technical standards</li><li><strong>Product Ops</strong> — New service and product GTM process planning support, cross-R&amp;D initiative tracking</li><li><strong>UX</strong> — User research, market insight, experience strategy</li></ul></div>
+    <div class="pm-block"><span class="pm-lbl">PM focus at your level</span>
+      <div id="lc-s1-a" style="display:none"><ul><li>Observe how product vision and roadmap direction are set — attend planning discussions and take notes</li><li>Ask questions to understand why certain strategic bets are being made</li><li>Support research and synthesis tasks that inform strategic direction</li></ul></div>
+      <div id="lc-s1-sa" style="display:none"><ul><li>Begin contributing to strategic discussions with data and customer context</li><li>Help draft problem statements and opportunity framing for assigned areas</li><li>Learn how boulders and OKRs cascade into team-level roadmap choices</li></ul></div>
+      <div id="lc-s1-m" style="display:block"><ul><li>Define and evangelize a clear vision for your product area</li><li>Translate boulders and OKRs into a short- and long-term roadmap</li><li>Make prioritization rationale visible using RICE + MoSCoW scoring</li><li>Align stakeholders around customer workflows and pain points before roadmap commitments are made</li><li>Surface tradeoffs and scope changes before review windows</li></ul></div>
+      <div id="lc-s1-sm" style="display:none"><ul><li>Interpret zone and division OKRs into realistic strategic choices for the team</li><li>Challenge whether the right problems are being prioritized — push back on weak strategic framing</li><li>Make go/no-go decisions with visible economic rationale, not just product logic</li></ul></div>
+      <div id="lc-s1-d" style="display:none"><ul><li>Own the 3-year roadmap direction for the zone</li><li>Connect roadmap choices to market positioning and corporate strategy</li><li>Represent the product direction externally to clients, ELT, and commercial partners</li><li>Ensure every PM in the zone has a visible, defensible strategic narrative for their area</li></ul></div>
+    </div>
+    <div class="oversight-block"><h5>What your manager is watching for</h5>
+      <div id="lc-s1-a-up" style="display:none"><ul><li>Are you developing the habit of asking why before moving to solutions?</li><li>Are you learning from strategic discussions, not just observing passively?</li><li>Can you explain the roadmap direction for your area and why it's prioritized the way it is?</li></ul></div>
+      <div id="lc-s1-sa-up" style="display:none"><ul><li>Are your strategic contributions grounded in data and customer insight?</li><li>Are you developing your own point of view, not just summarizing what others say?</li><li>Can you connect your area's work to the broader zone strategy?</li></ul></div>
+      <div id="lc-s1-m-up" style="display:block"><ul><li>Is the PM consistently framing problems and vision before committing to roadmap items?</li><li>Is the strategic narrative visible and defensible to leadership and partner teams?</li><li>Is stakeholder alignment being built proactively, not reactively?</li></ul></div>
+      <div id="lc-s1-sm-up" style="display:none"><ul><li>Is strategic direction reflecting zone-level ambition, not just team-level execution?</li><li>Are economic tradeoffs visible in prioritization decisions?</li><li>Is the Sr. Manager developing Manager-level PMs to own strategic framing independently?</li></ul></div>
+      <div id="lc-s1-d-up" style="display:none"><ul><li>Is the zone's strategic direction generating genuine market insight, not just feature planning?</li><li>Is the Director setting a zone-wide standard for strategic quality?</li><li>Is the product direction being communicated credibly to ELT and external stakeholders?</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Stage 2 -->
+  <div id="panel-s2" class="stage-panel">
+    <div class="panel-head"><div class="panel-badge" style="background:var(--amber)">02</div><div><span class="eye">Discovery &amp; Definition</span><h4>Discovery &amp; Definition</h4><p>PM investigates and prioritizes user problems, establishes directional hypotheses, and defines work clearly enough for architecture and build to begin.</p></div></div>
+    <div class="role-block"><h5>Who owns what</h5><ul><li><strong>PM</strong> — Problem framing, requirements definition, artifact quality, PRDs, epics, stories, acceptance criteria</li><li><strong>Engineering</strong> — Architecture direction, technical feasibility, dependency and complexity assessment</li><li><strong>Architecture</strong> — Pipeline and flow design, technology path evaluation, integration patterns, platform consistency recommendations, technical risk identification</li><li><strong>Product Ops</strong> — Roadmap/Jira tooling and PM execution best practices, scoping new Jira features</li><li><strong>UX</strong> — User research, usability analysis, interaction design, prototype validation</li></ul></div>
+    <div class="pm-block"><span class="pm-lbl">PM focus at your level</span>
+      <div id="lc-s2-a" style="display:none"><ul><li>Learn what makes a problem statement clear and evidence-backed</li><li>Shadow discovery conversations and help synthesize research findings</li><li>Begin writing user stories for assigned features with PM review before grooming</li></ul></div>
+      <div id="lc-s2-sa" style="display:none"><ul><li>Draft problem statements and opportunity framing for assigned areas</li><li>Own story writing for assigned scope in sprint-ready condition</li><li>Begin writing acceptance criteria that engineering can execute without follow-up questions</li></ul></div>
+      <div id="lc-s2-m" style="display:block"><ul><li>Frame customer and business problems before solutioning begins</li><li>Write PRDs, epics, stories, and acceptance criteria to the zone quality bar</li><li>Ensure Jira fields are complete and accurate without being chased by PrOps</li><li>Define success metrics, dependencies, risks, and mitigation in every major artifact</li><li>Bring work into grooming in a form that is clear and complete for engineering</li></ul></div>
+      <div id="lc-s2-sm" style="display:none"><ul><li>Set the artifact quality bar for the team — coach PMs whose work needs cleanup</li><li>Spot-check discovery quality and problem framing in planning and BURP sessions</li><li>Ensure hypotheses are directional and connected to real customer workflows before architecture begins</li></ul></div>
+      <div id="lc-s2-d" style="display:none"><ul><li>Own the zone-wide artifact quality standard — what does done look like for PRDs, epics, and stories?</li><li>Ensure discovery practice is rigorous across all areas, not just individual teams</li><li>Use AI tooling and templates to raise the floor for first-pass definition quality</li></ul></div>
+    </div>
+    <div class="oversight-block"><h5>What your manager is watching for</h5>
+      <div id="lc-s2-a-up" style="display:none"><ul><li>Are you distinguishing between what a stakeholder asks for and what they actually need?</li><li>Are your drafted stories improving in clarity without repeated correction?</li><li>Are you validating problems before jumping to solutions?</li></ul></div>
+      <div id="lc-s2-sa-up" style="display:none"><ul><li>Is your work arriving at grooming in sprint-ready condition?</li><li>Are your acceptance criteria executable by engineering without follow-up questions?</li><li>Are you owning your assigned scope without requiring cleanup?</li></ul></div>
+      <div id="lc-s2-m-up" style="display:block"><ul><li>Is the PM's artifact quality enabling clean engineering elaboration, or creating rework cycles?</li><li>Is the PM being chased by PrOps for Jira hygiene, or proactively maintaining it?</li><li>Are discovery and definition happening before commitments are made, not after?</li></ul></div>
+      <div id="lc-s2-sm-up" style="display:none"><ul><li>Is the Sr. Manager setting a clear quality standard for the team, not just for their own work?</li><li>Is discovery discipline improving across the team as a result of coaching?</li><li>Are hypotheses grounded in real customer evidence, not just internal assumptions?</li></ul></div>
+      <div id="lc-s2-d-up" style="display:none"><ul><li>Does the zone have a documented, consistent definition quality standard?</li><li>Is AI tooling being used to raise the floor across teams?</li><li>Is discovery quality improving as a zone-wide practice?</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Stage 3 -->
+  <div id="panel-s3" class="stage-panel">
+    <div class="panel-head"><div class="panel-badge" style="background:var(--rose)">03</div><div><span class="eye">Execution</span><h4>Execution</h4><p>PM owns product readiness through build and launch — ensuring the team has clarity to deliver and customers and partners are ready before customer exposure begins.</p></div></div>
+    <div class="role-block"><h5>Who owns what</h5><ul><li><strong>PM</strong> — Product readiness, launch narrative, rollout intent, alpha/beta objectives and exit decisions</li><li><strong>Engineering</strong> — Technical readiness, implementation quality, deployment, fix path</li><li><strong>Architecture</strong> — Technical sign-off on architectural decisions made during build, validation that implementation aligns with intended design patterns and platform standards</li><li><strong>Product Ops</strong> — Alpha/beta test planning, execution and data collection, GA readiness services</li><li><strong>UX</strong> — Design validation, usability testing, experience signoff for customer-facing changes</li></ul></div>
+    <div class="pm-block"><span class="pm-lbl">PM focus at your level</span>
+      <div id="lc-s3-a" style="display:none"><ul><li>Learn the difference between code deployment and customer rollout</li><li>Shadow the PM through TRA, release readiness signoff, and alpha/beta coordination</li><li>Understand what product readiness means and what PM specifically signs off on</li></ul></div>
+      <div id="lc-s3-sa" style="display:none"><ul><li>Support launch inputs for assigned features — release notes, Jira readiness fields, feature flags</li><li>Begin participating in alpha/beta coordination with PrOps guidance</li><li>Learn the TRA process and what engineering vs. PM each own within it</li></ul></div>
+      <div id="lc-s3-m" style="display:block"><ul><li>Sign off on product readiness before launch, separately from technical readiness</li><li>Complete PM-driven launch inputs on time without being chased</li><li>Define alpha/beta objectives, success criteria, and exit decisions</li><li>Work with engineering to separate deployment timing from customer rollout timing</li><li>Keep artifacts current as scope changes throughout the release</li></ul></div>
+      <div id="lc-s3-sm" style="display:none"><ul><li>Ensure PM team is consistently delivering product readiness signoff on time</li><li>Anticipate launch-impacting risks earlier and surface them before the readiness window</li><li>Own the release narrative for major features and drive commercial partner alignment</li></ul></div>
+      <div id="lc-s3-d" style="display:none"><ul><li>Own the zone's release readiness standard across all areas</li><li>Ensure a consistent, documented separation between technical and product readiness</li><li>Represent zone readiness in Release Preview and ELT-level launch conversations</li></ul></div>
+    </div>
+    <div class="oversight-block"><h5>What your manager is watching for</h5>
+      <div id="lc-s3-a-up" style="display:none"><ul><li>Do you understand the readiness process before being asked to support it?</li><li>Can you clearly distinguish between deployment and customer rollout?</li><li>Are your launch inputs reviewed for accuracy before submission?</li></ul></div>
+      <div id="lc-s3-sa-up" style="display:none"><ul><li>Are your launch inputs complete and accurate without requiring cleanup?</li><li>Are you managing alpha/beta logistics effectively?</li><li>Do you understand PM's readiness ownership vs. engineering's technical ownership?</li></ul></div>
+      <div id="lc-s3-m-up" style="display:block"><ul><li>Is the PM delivering readiness signoff on time, or being chased?</li><li>Is the PM owning product readiness explicitly, not deferring to engineering or PrOps?</li><li>Are alpha/beta exit criteria clear and defensible before rollout decisions are made?</li></ul></div>
+      <div id="lc-s3-sm-up" style="display:none"><ul><li>Is the Sr. Manager driving consistent readiness practice across the team?</li><li>Are major release narratives being communicated effectively to commercial partners?</li><li>Are launch-impacting risks being surfaced early, not at the last minute?</li></ul></div>
+      <div id="lc-s3-d-up" style="display:none"><ul><li>Is the zone's readiness standard consistently applied across all areas?</li><li>Is the Director representing zone readiness credibly in Release Preview and ELT conversations?</li><li>Is the separation between technical and product readiness clear and documented zone-wide?</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Stage 4 -->
+  <div id="panel-s4" class="stage-panel">
+    <div class="panel-head"><div class="panel-badge" style="background:var(--green)">04</div><div><span class="eye">Measurement &amp; Iteration</span><h4>Measurement &amp; Iteration</h4><p>PM evaluates performance against success criteria, captures learning, and iterates. Launch is not the end state — it is the handoff into measurement and reprioritization that feeds back into Strategic Planning.</p></div></div>
+    <div class="role-block"><h5>Who owns what</h5><ul><li><strong>PM</strong> — Success review, prioritization changes, learning reuse, post-GA outcome ownership</li><li><strong>Engineering</strong> — Root cause, defect resolution, technical follow-through</li><li><strong>Architecture</strong> — Assessment of whether post-launch issues point to architectural root causes, recommendations for structural changes that prevent recurrence</li><li><strong>Product Ops</strong> — Post-GA success services, end-of-life feature services, ongoing roadmap/Jira tooling</li><li><strong>UX</strong> — User feedback interpretation, usability iteration, design refinement</li></ul></div>
+    <div class="pm-block"><span class="pm-lbl">PM focus at your level</span>
+      <div id="lc-s4-a" style="display:none"><ul><li>Learn how success metrics are defined and tracked after launch</li><li>Participate in post-launch reviews as an observer and note-taker</li><li>Begin to understand how GA outcomes feed back into Strategic Planning</li></ul></div>
+      <div id="lc-s4-sa" style="display:none"><ul><li>Track adoption and outcome signals for assigned features after launch</li><li>Contribute to post-launch reviews with data prepared and organized in advance</li><li>Begin connecting post-launch signal to backlog prioritization for future releases</li></ul></div>
+      <div id="lc-s4-m" style="display:block"><ul><li>Define success metrics before launch — never after</li><li>Review GA metrics, adoption signals, and customer feedback at defined intervals</li><li>Participate in retrospectives so launch learning changes future behavior</li><li>Convert post-launch signal into updated prioritization decisions that feed back into Strategic Planning</li></ul></div>
+      <div id="lc-s4-sm" style="display:none"><ul><li>Own a portfolio of 5–10 outcome measures across the product area</li><li>Ensure learning from each launch feeds back into the next strategic planning cycle systematically</li><li>Drive retrospective quality — move beyond what happened to what changes as a result</li></ul></div>
+      <div id="lc-s4-d" style="display:none"><ul><li>Own the zone's measurement standard — what outcomes does the zone track and how?</li><li>Connect outcome data to ELT conversations and external proof points for commercial teams</li><li>Ensure post-launch learning shapes future zone-level strategic direction</li></ul></div>
+    </div>
+    <div class="oversight-block"><h5>What your manager is watching for</h5>
+      <div id="lc-s4-a-up" style="display:none"><ul><li>Are you developing the habit of asking whether work achieved its intended outcome?</li><li>Are you attending post-launch reviews and building fluency with outcome measurement?</li><li>Can you explain how GA outcomes connect to the next planning cycle?</li></ul></div>
+      <div id="lc-s4-sa-up" style="display:none"><ul><li>Is your post-launch data preparation accurate and complete before reviews?</li><li>Are you connecting outcome signals to concrete backlog implications?</li><li>Are you running post-launch reviews that produce actionable decisions, not just summaries?</li></ul></div>
+      <div id="lc-s4-m-up" style="display:block"><ul><li>Is the PM defining success metrics before launch, not retrofitting them after?</li><li>Is post-launch learning actually changing future prioritization decisions?</li><li>Are retrospective insights producing durable process or roadmap changes?</li></ul></div>
+      <div id="lc-s4-sm-up" style="display:none"><ul><li>Is the Sr. Manager's portfolio of measures being actively tracked and reported?</li><li>Is outcome data influencing zone-level strategy, not just team-level backlog?</li><li>Is learning being captured at the team level and shared across the zone?</li></ul></div>
+      <div id="lc-s4-d-up" style="display:none"><ul><li>Is the zone's measurement practice generating strategic insight?</li><li>Is outcome data being connected to ELT and commercial conversations credibly?</li><li>Is post-launch learning shaping future zone-level strategic direction?</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Governance panel -->
+  <div class="gov-panel">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:34px;height:34px;border-radius:10px;background:var(--purple);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0">∞</div>
+      <div>
+        <h5 style="color:var(--purple);font-size:.95rem;margin-bottom:4px">Continuous Backlog &amp; Bug Governance</h5>
+        <p style="font-size:13px;max-width:none">PM keeps bugs and enhancements legible, prioritized, and connected to release and roadmap tradeoffs at every stage. This is not a discrete phase — it is an ongoing discipline.</p>
+      </div>
+    </div>
+    <div class="gov-inner">
+      <div class="gov-col"><strong style="color:var(--purple)">PM owns</strong><ul><li>Backlog health and issue prioritization judgment</li><li>Enhancement tradeoffs and product-level bug awareness</li><li>Escalation when defects create roadmap or patient-safety risk</li></ul></div>
+      <div class="gov-col"><strong style="color:var(--slate)">Partners own</strong><ul><li><strong>Engineering</strong> — root cause, fix path, delivery estimates</li><li><strong>Architecture</strong> — assessment of whether patterns or pipeline design are contributing to recurring issues</li><li><strong>PrOps</strong> — intake hygiene, visibility, cadence support</li><li><strong>UX</strong> — experience implications for fixes</li></ul></div>
+      <div class="gov-col"><strong style="color:var(--green)">What good looks like</strong><ul><li>Bug backlog visible in Zone Reviews as a standing item</li><li>Triage participation is active, not passive</li><li>Backlog order reflects judgment, not accumulation</li></ul></div>
+    </div>
+  </div>
+
+</div><!-- /p2 -->
+
+<!-- ============================================================ -->
+<!-- PAGE 3: YOUR ONBOARDING -->
+<!-- ============================================================ -->
+<div class="page" id="p3">
+
+  <div class="hero">
+    <span class="eye">Your Onboarding</span>
+    <h1>A structured ramp designed to build strategic PMs, not just process familiarity</h1>
+    <p>The goal is not only to teach tools and ceremonies. It is to build Product Managers who can define a vision for their area, translate that vision into roadmap choices, and align stakeholders around customer workflows and pain points. Your onboarding happens in three distinct layers.</p>
+  </div>
+
+  <div class="grid3" style="margin-bottom:16px">
+
+    <div class="card">
+      <span class="chip chip-slate">Layer 1</span>
+      <h3>Day 1 — Athena Employee Onboarding</h3>
+      <p style="margin-bottom:12px">Handled by athena's central onboarding program. Before anything product-related, you'll get set up as an athena employee.</p>
+      <ul style="font-size:13px">
+        <li>Laptop setup and IT access provisioning</li>
+        <li>Systems, tools, and internal protocols</li>
+        <li>Benefits, HR policies, and compliance training</li>
+        <li>Security, access controls, and identity setup</li>
+        <li>Understanding athena's mission, values, and organizational structure</li>
+        <li>Introduction to key internal platforms (Workday, Okta, etc.)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="chip chip-teal">Layer 2</span>
+      <h3>Product at Athena — 3-Day Onboarding Program</h3>
+      <p style="margin-bottom:12px">A structured 3-day program covering how product management works across athena. Run centrally by the Product Division.</p>
+      <div style="display:grid;gap:8px">
+        <div style="background:var(--teal-lt);border-radius:10px;padding:10px 12px">
+          <strong style="font-size:12px;color:var(--teal);display:block;margin-bottom:4px">Day 1 — March 10</strong>
+          <ul style="font-size:12px">
+            <li>Introduction and orientation</li>
+            <li>R&amp;D Operating Cadence</li>
+            <li>Product Division Best Practices</li>
+            <li>Jira and Feature Fields</li>
+            <li>Support Environments</li>
+            <li>Product Management at athena</li>
+          </ul>
+        </div>
+        <div style="background:#f0fffe;border-radius:10px;padding:10px 12px">
+          <strong style="font-size:12px;color:var(--teal);display:block;margin-bottom:4px">Day 2 — March 11</strong>
+          <ul style="font-size:12px">
+            <li>Product Knowledge (PK) Overview</li>
+            <li>Product Analytics</li>
+            <li>Intro to Patient Safety</li>
+            <li>Release Management Overview</li>
+            <li>AI at athena</li>
+            <li>Release Enablement Functions</li>
+          </ul>
+        </div>
+        <div style="background:#f0fffe;border-radius:10px;padding:10px 12px">
+          <strong style="font-size:12px;color:var(--teal);display:block;margin-bottom:4px">Day 3 — March 12</strong>
+          <ul style="font-size:12px">
+            <li>Clinicals, IDP, and Value-Based Care overviews</li>
+            <li>Building a Durable &amp; Open Ecosystem</li>
+            <li>Improving Practice Management &amp; RCM</li>
+            <li>UX &amp; Design, Research Operations, Tech Writing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="chip chip-amber">Layer 3</span>
+      <h3>DEP Zone — Product Onboarding</h3>
+      <p style="margin-bottom:12px">Zone-specific onboarding that happens after Layers 1 and 2. This is where you go deep on the DEP area, its customers, its tools, and how work actually moves.</p>
+      <ul style="font-size:13px">
+        <li>Learn the DEP zone vision, charter, and how your product area fits within Data Services, Open Ecosystem, Analytics Platform, or Integration Platform</li>
+        <li>Meet your engineering lead, QA lead, PrOps partner, adjacent PMs, and product buddy</li>
+        <li>Access Jira, LaunchDarkly, roadmap dashboards, Master R&amp;D Calendar, and Confluence spaces specific to DEP</li>
+        <li>Review strategic decks, roadmap materials, and Confluence pages for your product area</li>
+        <li>Understand the BURP, Zone Review, Release Preview, and TRA processes as they operate in DEP</li>
+        <li>Shadow a sprint review, grooming session, retrospective, and Product Ops sync in your zone</li>
+        <li>Identify any regulatory, compliance, or patient-safety constraints specific to your area</li>
+        <li>Learn the HPCI escalation path and how it applies to your product area</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="banner" style="margin-bottom:16px"><h3 style="margin-bottom:8px">Your manager will share specific success statements in your first week</h3><p style="max-width:none">Beyond the milestones below, your manager has prepared 3–5 specific, observable statements about what success looks like in their eyes — concrete signals they'll actually be watching for, not generic expectations.</p></div>
+
+  <span class="section-lbl">Layer 3 — DEP zone onboarding week by week</span>
+  <div style="background:var(--amber-lt);border:1px solid #e8d0b8;border-radius:var(--r);padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px">
+    <div style="width:30px;height:30px;border-radius:8px;background:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:700;font-size:13px">3</div>
+    <p style="font-size:13px;max-width:none;color:var(--ink)">The timeline below is your <strong>DEP zone-specific onboarding</strong> and begins after you've completed Layer 1 (Day 1 athena onboarding) and Layer 2 (the 3-day Product at Athena program). It is managed by your manager and tailored to your specific product area within DEP.</p>
+  </div>
+  <span class="section-lbl">Week by week — what you're doing and why</span>
+  <div class="ob-track">
+    <div class="ob-row"><div class="ob-week">Weeks 1–2<span class="ob-phase">Orient</span></div><div class="ob-content"><h4>Context, relationships, and the operating model</h4><ul><li>Meet your engineering lead, QA lead, PrOps partner, adjacent PMs, and product buddy</li><li>Learn the short- and long-term product vision for your area through a dedicated walkthrough with your manager</li><li>Shadow a sprint review, grooming session, retrospective, and Product Ops sync</li><li>Get access to Jira (athenajira.athenahealth.com), LaunchDarkly, roadmap dashboards, Master R&amp;D Calendar, Confluence, and athenaOne</li><li>Read: Product Division Best Practices, Zone Review Agenda, Product Roadmap Guidance, Alpha/Beta Testing Guidance</li><li>Understand the Boulder → Feature → Epic → Story hierarchy and how your zone uses it</li></ul></div></div>
+    <div class="ob-row"><div class="ob-week">Weeks 3–4<span class="ob-phase">Learn</span></div><div class="ob-content"><h4>The process in practice</h4><ul><li>Attend a Zone Review and understand what metrics leadership is looking at</li><li>Walk through BURP Documentation Best Practices and the current TRA process with your PrOps contact</li><li>Practice explaining how your team's roadmap maps to customer workflows and pain points</li><li>Review an existing PRD and assess it against the quality bar in this framework</li><li>Get direct exposure to customer context by sitting in on a sales demo or user research session</li><li>Learn the HPCI escalation path and when it applies to your product area</li></ul></div></div>
+    <div class="ob-row"><div class="ob-week">Weeks 5–8<span class="ob-phase">Execute</span></div><div class="ob-content"><h4>Own your first deliverables</h4><ul><li>Draft and present a concise vision statement for your product area to your manager and key partners</li><li>Write your first epic or story set and get feedback from engineering on clarity</li><li>Run or co-run your first grooming session</li><li>Contribute to roadmap data and GA readiness fields before the next PrOps deadline</li><li>Define success metrics for one upcoming feature before it ships</li><li>Draft one BURP epic summary with problem statement, metrics, dependencies, risks, and mitigation</li></ul></div></div>
+    <div class="ob-row"><div class="ob-week">Month 3+<span class="ob-phase">Operate</span></div><div class="ob-content"><h4>Full role accountability</h4><ul><li>Own your roadmap inputs end-to-end without PrOps reminders</li><li>Regularly socialize your area's strategic direction with stakeholders across the business</li><li>Lead product readiness sign-off for your next release</li><li>Complete a post-launch review for a shipped feature and share the learning</li><li>Present or materially contribute to a Zone Review or Release Preview for your product area</li></ul></div></div>
+  </div>
+
+  <span class="section-lbl">Manager checkpoints</span>
+  <div class="milestone-grid">
+    <div class="milestone-card"><span class="milestone-chip">30 Days</span><h3>Orientation checkpoint</h3><p style="margin-bottom:8px">Manager reviews role understanding, partner map, tool access, and early product-area understanding.</p><ul><li>Can explain the operating model and key ceremonies</li><li>Understands partner roles and the current release context</li><li>Can explain the near-term priorities and why they're the priority</li></ul></div>
+    <div class="milestone-card"><span class="milestone-chip">60 Days</span><h3>Capability checkpoint</h3><p style="margin-bottom:8px">Manager reviews artifact quality, roadmap understanding, strategic narrative, and ceremony participation.</p><ul><li>Can articulate the vision for the area clearly</li><li>Writes usable artifacts with limited correction needed</li><li>Participates credibly in roadmap and release discussions</li></ul></div>
+    <div class="milestone-card"><span class="milestone-chip">6 Months</span><h3>Independent ownership</h3><p style="margin-bottom:8px">Manager reviews stakeholder communication, release readiness, backlog governance, and post-launch follow-through.</p><ul><li>Owns their area with limited prompting</li><li>Regularly socializes strategy across the business</li><li>Translates vision into clear delivery and learning loops</li></ul></div>
+  </div>
+
+</div><!-- /p3 -->
+
+<!-- ============================================================ -->
+<!-- PAGE 4: ENTER THE EXPERIENCE -->
+<!-- ============================================================ -->
+<div class="page" id="p4">
+
+  <div class="hero">
+    <span class="eye">Enter the Onboarding Experience</span>
+    <h1>Ready to begin? Choose your path.</h1>
+    <p>The onboarding experience lives in Claude Code — an AI-guided agent that walks you through your specific role, phase, and tasks. Before you enter, make sure you've read through this site. The agent builds on what you've seen here.</p>
+  </div>
+
+  <span class="section-lbl">What this covers</span>
+  <div class="banner" style="margin-bottom:16px">
+    <h3 style="margin-bottom:10px">This is a flexible onboarding process — broadly it covers four areas</h3>
+    <div class="grid2" style="margin-bottom:0">
+      <div>
+        <p style="font-size:14px;margin-bottom:6px"><strong>1. DEP overview and process</strong><br>How the zone is organized, how work flows from strategy to sprint, and how your role fits into it. The operating model, the planning hierarchy, and the ceremonies that govern delivery.</p>
+        <p style="font-size:14px"><strong>2. Product status — where we are and where we want to go</strong><br>The current roadmap for your area, what's in-flight, what's coming, and the strategic rationale behind the priorities. You'll understand the boulders and features your team is working toward.</p>
+      </div>
+      <div>
+        <p style="font-size:14px;margin-bottom:6px"><strong>3. Team</strong><br>The people you'll work with — engineering, QA, architecture, PrOps, peer PMs, and external stakeholders. Who does what, how they prefer to be engaged, and which relationships to build first.</p>
+        <p style="font-size:14px"><strong>4. How we work / operating cadence</strong><br>The recurring ceremonies (Zone Review, BURP, sprint review, grooming, PrOps sync), what PM owns in each, and how to show up productively in your first month.</p>
+      </div>
+    </div>
+  </div>
+
+  <span class="section-lbl">What happens each phase</span>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+    <div class="card">
+      <span class="chip chip-teal">Weeks 1–2 · Orient</span>
+      <h4 style="margin-bottom:8px">Build your foundation</h4>
+      <ul style="font-size:13px">
+        <li>Get access: Jira, Confluence, LaunchDarkly, roadmap dashboards, R&amp;D Calendar, athenaOne</li>
+        <li>Meet your product buddy, engineering lead, QA lead, and PrOps partner</li>
+        <li>Read the core materials and build a mental model of the operating structure</li>
+        <li>Understand the Boulder → Feature → Epic → Story hierarchy</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="chip chip-amber">Weeks 3–4 · Learn</span>
+      <h4 style="margin-bottom:8px">Get fluent under real conditions</h4>
+      <ul style="font-size:13px">
+        <li>Attend Zone Review and understand what leadership is watching</li>
+        <li>Walk through BURP with your PrOps partner before your first session</li>
+        <li>Assess a real PRD against the quality bar in this framework</li>
+        <li>Understand the HPCI escalation path and when it applies</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="chip chip-slate">Weeks 5–8 · Execute</span>
+      <h4 style="margin-bottom:8px">Produce your first real deliverables</h4>
+      <ul style="font-size:13px">
+        <li>Draft your vision statement for the area and share it with your manager</li>
+        <li>Write your first PRD draft and BURP epic summary</li>
+        <li>Run or co-run a grooming session</li>
+        <li>Define success metrics for one upcoming feature before it ships</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="chip chip-green">Month 3+ · Operate</span>
+      <h4 style="margin-bottom:8px">Full accountability, no scaffolding</h4>
+      <ul style="font-size:13px">
+        <li>Own your roadmap inputs end-to-end without prompting</li>
+        <li>Lead product readiness sign-off for a release</li>
+        <li>Complete a post-launch review and share the learning</li>
+        <li>Present or contribute to a Zone Review or Release Preview</li>
+      </ul>
+    </div>
+  </div>
+
+  <span class="section-lbl">How to launch</span>
+
+  <!-- track toggle -->
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button id="lt-nh-btn" class="tr-person-btn on" onclick="launchTrack('nh')">New Hire</button>
+    <button id="lt-mgr-btn" class="tr-person-btn" onclick="launchTrack('mgr')">Manager</button>
+  </div>
+
+  <!-- NEW HIRE track -->
+  <div id="lt-nh" class="card" style="margin-bottom:24px">
+    <h4 style="margin-bottom:4px">Get into Claude Code — New Hire</h4>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Six steps. Takes under 10 minutes the first time.</p>
+    <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:14px">
+      <li>
+        <strong>Open Terminal</strong>&nbsp;&nbsp;<span style="font-size:12px;color:var(--muted)">Mac: <code>⌘ Space</code> → type <em>Terminal</em> → Enter</span>
+      </li>
+      <li>
+        <strong>Set up SSH access to Bitbucket</strong> (first time only)
+
+        <!-- Step A: Check for existing key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">A. Check if you already have an SSH key</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ls ~/.ssh/id_*.pub</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span><strong style="color:var(--text)">If you see a filename</strong> like <code>id_ed25519.pub</code> or <code>id_rsa.pub</code> — you already have a key. Skip to step B below.</span>
+          <span><strong style="color:var(--text)">If you see "No such file or directory" or nothing at all</strong> — you need to create one. Continue with the next command.</span>
+        </div>
+
+        <!-- Step A2: Generate key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">Only if you don't have a key: generate one</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ssh-keygen -t ed25519 -C "your-email@athenahealth.com"</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span>The terminal will ask you three questions. For each one, just press <strong>Enter</strong> to accept the default:</span>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-family:monospace;font-size:12px;display:flex;flex-direction:column;gap:3px">
+            <span><span style="color:var(--muted)">Enter file in which to save the key:</span> &nbsp;→ press Enter</span>
+            <span><span style="color:var(--muted)">Enter passphrase (empty for no passphrase):</span> &nbsp;→ press Enter</span>
+            <span><span style="color:var(--muted)">Enter same passphrase again:</span> &nbsp;→ press Enter</span>
+          </div>
+          <span>You'll see a message saying your key has been saved. You're done with this part.</span>
+        </div>
+
+        <!-- Step B: Copy the key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">B. Copy your public key</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">cat ~/.ssh/id_ed25519.pub | pbcopy</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted)">
+          This copies your key to your clipboard silently — nothing will print, that's normal. If your key file is named <code>id_rsa.pub</code> instead, use that name. You can now paste it anywhere with <code>⌘V</code>.
+        </div>
+
+        <!-- Step C: Add to Bitbucket -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">C. Add your key to Bitbucket</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--muted)">
+          <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+            <li>Open <a href="https://bitbucket.athenahealth.com" style="color:var(--teal)">bitbucket.athenahealth.com</a> in your browser and log in with your athenahealth username and password</li>
+            <li>Click your <strong>profile picture or avatar</strong> in the top-right corner of the page</li>
+            <li>Click <strong>Profile</strong> from the dropdown menu</li>
+            <li>In the left sidebar, look for the <strong>Security</strong> section — click <strong>SSH Keys</strong></li>
+            <li>Click the <strong>Add key</strong> button</li>
+            <li>In the <strong>Label</strong> field, type something like <code>My MacBook</code> so you can identify it later</li>
+            <li>In the <strong>Key</strong> field, paste with <code>⌘V</code> — the key should start with <code>ssh-ed25519</code> and end with your email address</li>
+            <li>Click <strong>Save</strong></li>
+          </ol>
+        </div>
+
+        <!-- Step D: Verify -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">D. Verify the connection works</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ssh -T git@bitbucket.athenahealth.com -p 7999</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span><strong style="color:var(--text)">Success looks like:</strong> a line mentioning your username, e.g. <code>Welcome to Bitbucket, firstname-lastname!</code></span>
+          <span><strong style="color:var(--text)">If you see "Permission denied (publickey)":</strong> the key wasn't saved correctly in Bitbucket — go back to step C and try again, making sure you pasted the full key.</span>
+          <span>You may see a prompt asking "Are you sure you want to continue connecting?" — type <code>yes</code> and press Enter. This is normal the first time.</span>
+        </div>
+      </li>
+      <li>
+        <strong>Clone the repo</strong> (first time only)
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">git clone ssh://git@bitbucket.athenahealth.com:7999/~jakeith/pm-onboarding.git ~/pm-onboarding</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Already cloned? Skip steps 2 and 3.</span>
+      </li>
+      <li>
+        <strong>Create your branch</strong> — name it after yourself
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">cd ~/pm-onboarding && git checkout -b onboarding/[your-name]</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Example: <code>onboarding/sagar-joshi</code>. This keeps your progress separate from everyone else's.</span>
+      </li>
+      <li>
+        <strong>Launch Claude Code</strong>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">claude</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Command not found? Run <code>npm install -g @anthropic-ai/claude-code</code> first.</span>
+      </li>
+      <li>
+        <strong>Paste this as your first message</strong> — fill in the blanks
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:12px;white-space:pre-wrap">I'm a new PM starting onboarding. My name is [your name], my role is [your role], and my manager is [manager name]. This is my first session.</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Returning? Say "pick up where we left off" instead and Claude will read your state file.</span>
+      </li>
+    </ol>
+    <div style="margin-top:16px;background:var(--teal-lt);border:1px solid #c2dedd;border-radius:8px;padding:12px 16px">
+      <p style="font-size:13px;color:var(--teal);margin:0"><strong>No manual saving needed.</strong> At the end of every session, Claude automatically saves your progress and pushes it to the shared repo. Your manager's dashboard updates the next morning.</p>
+    </div>
+  </div>
+
+  <!-- MANAGER track -->
+  <div id="lt-mgr" class="card" style="margin-bottom:24px;display:none">
+    <h4 style="margin-bottom:4px">Get into Claude Code — Manager</h4>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">You'll work on your own branch so your customizations stay separate from main — and can be merged back as improvements.</p>
+    <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:14px">
+      <li>
+        <strong>Open Terminal</strong>&nbsp;&nbsp;<span style="font-size:12px;color:var(--muted)">Mac: <code>⌘ Space</code> → type <em>Terminal</em> → Enter</span>
+      </li>
+      <li>
+        <strong>Set up SSH access to Bitbucket</strong> (first time only)
+
+        <!-- Step A: Check for existing key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">A. Check if you already have an SSH key</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ls ~/.ssh/id_*.pub</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span><strong style="color:var(--text)">If you see a filename</strong> like <code>id_ed25519.pub</code> or <code>id_rsa.pub</code> — you already have a key. Skip to step B below.</span>
+          <span><strong style="color:var(--text)">If you see "No such file or directory" or nothing at all</strong> — you need to create one. Continue with the next command.</span>
+        </div>
+
+        <!-- Step A2: Generate key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">Only if you don't have a key: generate one</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ssh-keygen -t ed25519 -C "your-email@athenahealth.com"</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span>The terminal will ask you three questions. For each one, just press <strong>Enter</strong> to accept the default:</span>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-family:monospace;font-size:12px;display:flex;flex-direction:column;gap:3px">
+            <span><span style="color:var(--muted)">Enter file in which to save the key:</span> &nbsp;→ press Enter</span>
+            <span><span style="color:var(--muted)">Enter passphrase (empty for no passphrase):</span> &nbsp;→ press Enter</span>
+            <span><span style="color:var(--muted)">Enter same passphrase again:</span> &nbsp;→ press Enter</span>
+          </div>
+          <span>You'll see a message saying your key has been saved. You're done with this part.</span>
+        </div>
+
+        <!-- Step B: Copy the key -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">B. Copy your public key</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">cat ~/.ssh/id_ed25519.pub | pbcopy</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span>This copies your key to your clipboard silently — nothing will print, that's normal. If your key file is named <code>id_rsa.pub</code> instead, use that name. You can now paste it anywhere with <code>⌘V</code>.</span>
+        </div>
+
+        <!-- Step C: Add to Bitbucket -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">C. Add your key to Bitbucket</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--muted)">
+          <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+            <li>Open <a href="https://bitbucket.athenahealth.com" style="color:var(--teal)">bitbucket.athenahealth.com</a> in your browser and log in with your athenahealth username and password</li>
+            <li>Click your <strong>profile picture or avatar</strong> in the top-right corner of the page</li>
+            <li>Click <strong>Profile</strong> from the dropdown menu</li>
+            <li>In the left sidebar, look for the <strong>Security</strong> section — click <strong>SSH Keys</strong></li>
+            <li>Click the <strong>Add key</strong> button</li>
+            <li>In the <strong>Label</strong> field, type something like <code>My MacBook</code> so you can identify it later</li>
+            <li>In the <strong>Key</strong> field, paste with <code>⌘V</code> — the key should start with <code>ssh-ed25519</code> and end with your email address</li>
+            <li>Click <strong>Save</strong></li>
+          </ol>
+        </div>
+
+        <!-- Step D: Verify -->
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--text)">D. Verify the connection works</div>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">ssh -T git@bitbucket.athenahealth.com -p 7999</code>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px">
+          <span><strong style="color:var(--text)">Success looks like:</strong> a line mentioning your username, e.g. <code>Welcome to Bitbucket, firstname-lastname!</code></span>
+          <span><strong style="color:var(--text)">If you see "Permission denied (publickey)":</strong> the key wasn't saved correctly in Bitbucket — go back to step C and try again, making sure you pasted the full key.</span>
+          <span>You may see a prompt asking "Are you sure you want to continue connecting?" — type <code>yes</code> and press Enter. This is normal the first time.</span>
+        </div>
+      </li>
+      <li>
+        <strong>Clone the repo</strong> (first time only)
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">git clone ssh://git@bitbucket.athenahealth.com:7999/~jakeith/pm-onboarding.git ~/pm-onboarding</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Already cloned? Skip steps 2 and 3.</span>
+      </li>
+      <li>
+        <strong>Create your branch</strong> — name it after your new hire
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">cd ~/pm-onboarding && git checkout -b manager/[your-name]-[hire-name]</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Example: <code>manager/vijay-sagar-joshi</code>. This keeps your prep separate from main.</span>
+      </li>
+      <li>
+        <strong>Launch Claude Code</strong>
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:13px">claude</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Command not found? Run <code>npm install -g @anthropic-ai/claude-code</code> first.</span>
+      </li>
+      <li>
+        <strong>Paste this as your first message</strong> — fill in the blanks
+        <div style="margin-top:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px">
+          <code style="font-size:12px;white-space:pre-wrap">I'm a manager preparing onboarding for a new hire. My name is [your name], my new hire is [hire name], their role is [role], and their start date is [date]. I'm on branch manager/[your-name]-[hire-name]. Help me set up their onboarding config.</code>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Your changes stay on your branch. Jake will periodically pull improvements back to main.</span>
+      </li>
+    </ol>
+    <div style="margin-top:16px;background:var(--teal-lt);border:1px solid #c2dedd;border-radius:8px;padding:12px 16px">
+      <p style="font-size:13px;color:var(--teal);margin:0"><strong>No manual saving needed.</strong> Claude auto-commits and pushes after every session. The tracker dashboard refreshes every morning at 9:30am — so you'll see your new hire's latest progress without doing anything.</p>
+    </div>
+  </div>
+
+  <span class="section-lbl">What you'll do inside the experience</span>
+  <div class="grid3">
+    <div class="card"><span class="chip chip-teal">New hire</span><h4>Guided conversations by phase</h4><p>Each phase has a structured flow — not a checklist, but a real conversation. The agent asks what you learned, what stood out, and how this compares to how you've worked before.</p></div>
+    <div class="card"><span class="chip chip-amber">New hire</span><h4>Artifact creation with scaffolding</h4><p>The agent guides you through your first vision statement, PRD, BURP epic summary, story set, and post-launch review — asking questions that surface the content before any writing happens.</p></div>
+    <div class="card"><span class="chip chip-slate">Manager</span><h4>Checkpoints with real substance</h4><p>The 30-day, 60-day, and 6-month checkpoints are structured conversations, not status checks. The agent surfaces your new hire's self-assessment alongside your own and flags where your reads diverge.</p></div>
+  </div>
+
+  <div class="banner" style="background:var(--surface);border-color:var(--line)"><h3 style="margin-bottom:8px">How the experience ends — the 6-month close</h3><p style="max-width:none">At the 6-month mark, both the manager and new hire independently complete a closing reflection. The agent surfaces where you agreed, where your perspectives diverged, and what questions are still open. That divergence becomes the agenda for a closing 1:1 — and the feedback from both of you feeds directly into improving the program for the next cohort.</p></div>
+
+</div><!-- /p4 -->
+
+<!-- ============================================================ -->
+<!-- PAGE 5: TRACKER -->
+<!-- ============================================================ -->
+<div class="page" id="p5">
+
+  <div class="hero">
+    <span class="eye">Onboarding Tracker</span>
+    <h1>Cohort Progress Dashboard</h1>
+    <p>Real-time view of every new hire's onboarding progress. Click a person card to see their full detail — phase status, knowledge gaps, relationships, reading, and open items.</p>
+  </div>
+
+  <!-- Cohort view -->
+  <div id="tr-cohort-view">
+    <div class="tr-stat-row" id="tr-cohort-stats"></div>
+    <span class="section-lbl">Active new hires</span>
+    <div class="tr-cohort-grid" id="tr-cohort-grid"></div>
+  </div>
+
+  <!-- Person detail view -->
+  <div id="tr-detail-view" style="display:none">
+    <div style="margin-bottom:16px">
+      <button onclick="trShowCohort()" style="background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:13px;font-family:inherit;cursor:pointer;color:var(--muted)">← All people</button>
+    </div>
+    <div id="tr-detail-content"></div>
+  </div>
+
+</div><!-- /p5 -->
+
+</div><!-- /shell -->
+
+<script>
+// ── TRACKER DATA ─────────────────────────────────────────────────
+var TR_MANIFEST = {
+  "cohort_label": "Spring 2026",
+  "last_updated": "2026-05-15",
+  "stats": {
+    "active": 1,
+    "phases": {"1": 1, "2": 0, "3": 0, "4": 0},
+    "avg_gaps": 4,
+    "checkpoints_due": 1
+  },
+  "people": [
+    {
+      "id": "sagar-joshi",
+      "name": "Sagar Joshi",
+      "role": "PM — De-identified Data Platform",
+      "manager": "Vijay",
+      "level": "Manager",
+      "start_date": "2026-05-07",
+      "current_phase": 1,
+      "fast_track": true,
+      "last_session_date": "2026-05-15",
+      "session_count": 1,
+      "open_gaps": 4,
+      "open_items": 12,
+      "flags": ["payer_provider_gap"],
+      "summary_line": "Strong strategic framing; open gaps in de-identification framework and EHR data model depth.",
+      "phase_status": "in_progress"
+    }
+  ]
+};
+
+var TR_PEOPLE = {
+  "sagar-joshi": {
+    "id": "sagar-joshi",
+    "name": "Sagar Joshi",
+    "role": "PM — De-identified Data Platform",
+    "manager": "Vijay",
+    "level": "Manager",
+    "start_date": "2026-05-07",
+    "current_phase": 1,
+    "current_week": 2,
+    "fast_track": true,
+    "independence_target_days": 60,
+    "last_session_date": "2026-05-15",
+    "session_count": 1,
+    "next_checkpoint": "2026-06-06",
+    "next_checkpoint_type": "30-day",
+    "phase_timeline": [
+      {"phase": 1, "label": "Orient", "weeks": "1–2", "status": "in_progress"},
+      {"phase": 2, "label": "Learn", "weeks": "3–4", "status": "not_started"},
+      {"phase": 3, "label": "Execute", "weeks": "5–8", "status": "not_started"},
+      {"phase": 4, "label": "Operate", "weeks": "Month 3+", "status": "not_started"}
+    ],
+    "knowledge_gaps": [
+      {"gap": "De-identification framework fluency", "detail": "Safe Harbor vs. Expert Determination — hasn't worked with de-identification as a product mechanism. In-flight methodology decision depends on closing this gap.", "raised_in": "Session 1", "status": "open", "priority": "high"},
+      {"gap": "EHR vs. claims data", "detail": "BCBS background is payer-side (claims, member data). EHR data reflects clinical workflow — different structure, different quality model, different stakeholder context.", "raised_in": "Session 1", "status": "open", "priority": "high"},
+      {"gap": "De-identification certification process", "detail": "Doesn't know who certifies outputs, what triggers re-certification, or what the incident path is if re-identification risk reaches a research partner.", "raised_in": "Session 1", "status": "open", "priority": "high"},
+      {"gap": "Provider-side patient safety (HPCI)", "detail": "HPCI mental model from BCBS is payer-side escalation logic. Athena's HPCI process is provider-side patient safety. Different trigger criteria and escalation path.", "raised_in": "Session 1", "status": "open", "priority": "medium"}
+    ],
+    "competency_signals": [
+      {"competency": "Influence", "signal": "strong", "note": "Identified Legal as co-designer in week 1 without prompting. Framed the relationship correctly before being told."},
+      {"competency": "Strategic Thinking", "signal": "early", "note": "Connected the platform to the commercial rationale immediately. Vision statement work in Phase 3 will test depth."},
+      {"competency": "Curiosity", "signal": "watch", "note": "Good questions, honest about gaps. Watch for over-rotation toward data before forming a point of view — PhD reflex may slow judgment formation."}
+    ],
+    "relationships": [
+      {"name": "Leila Nasseri", "role": "Product Buddy", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Marcus Webb", "role": "Engineering Team Lead", "status": "scheduled", "scheduled_date": "2026-05-16", "priority": "week_1"},
+      {"name": "Priya Nair", "role": "Engineering Manager", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Dev Anand", "role": "Engineer", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Tara Okeke", "role": "Engineer", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "James Cho", "role": "Engineer", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Rohit Shenoy", "role": "Data Architect", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "Dani Okafor", "role": "QA Lead", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Aisha Patel", "role": "PrOps Partner", "status": "not_scheduled", "priority": "week_1"},
+      {"name": "Tomoko Evers", "role": "DEP PM Peer", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "Ben Calloway", "role": "DEP PM Peer", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "Sofia Martins", "role": "DEP PM Peer", "status": "not_scheduled", "priority": "month_1"},
+      {"name": "Nadia Osei", "role": "Legal Counsel", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "Chris Vargas", "role": "Privacy Partner", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "Preethi Venkat", "role": "Data Modeling Lead", "status": "not_scheduled", "priority": "week_2"},
+      {"name": "James Kim", "role": "Corporate Strategy", "status": "not_scheduled", "priority": "week_2"}
+    ],
+    "reading": [
+      {"title": "PM Onboarding Site", "status": "complete", "priority": "required"},
+      {"title": "DEP Internal Home (Confluence)", "status": "not_started", "priority": "required", "due": "week_1"},
+      {"title": "2026 R&D Boulders and Goals", "status": "not_started", "priority": "required", "due": "week_1"},
+      {"title": "26.7 Release Guidance", "status": "not_started", "priority": "required", "due": "week_1"},
+      {"title": "Product Division Best Practices", "status": "not_started", "priority": "required", "due": "week_1"},
+      {"title": "Zone Review Agenda", "status": "not_started", "priority": "required", "due": "week_1"},
+      {"title": "HPCI Escalation Guidance", "status": "not_started", "priority": "high", "due": "before legal meeting"},
+      {"title": "BURP Documentation Best Practices", "status": "not_started", "priority": "high", "due": "week_2"},
+      {"title": "Alpha/Beta Communications", "status": "not_started", "priority": "required", "due": "week_2"}
+    ],
+    "open_items": [
+      {"item": "Reach out to Leila Nasseri (product buddy) — keep it casual", "due": "this week", "status": "open"},
+      {"item": "Schedule working session with Aisha Patel — Jira project, R&D calendar, field hygiene", "due": "this week", "status": "open"},
+      {"item": "Schedule intro with Dani Okafor (QA lead)", "due": "this week", "status": "open"},
+      {"item": "Ask Vijay to introduce Priya Nair in next 1:1", "due": "next 1:1", "status": "open"},
+      {"item": "Ask Marcus Webb to do a round of eng team intros in next team sync", "due": "this week", "status": "open"},
+      {"item": "Schedule working session with Rohit Shenoy (data architect) — not just an intro", "due": "week 2", "status": "open"},
+      {"item": "Get product brief from Vijay", "due": "this week", "status": "open"},
+      {"item": "Read DEP Internal Confluence home page", "due": "this week", "status": "open"},
+      {"item": "Read 2026 R&D Boulders and Goals", "due": "this week", "status": "open"},
+      {"item": "Read 26.7 Release Guidance", "due": "this week", "status": "open"},
+      {"item": "Read HPCI Escalation Guidance before Legal meeting", "due": "before legal meeting", "status": "open"},
+      {"item": "Boulder→Feature→Epic→Story tracing exercise in Jira (once project located)", "due": "next session", "status": "open"}
+    ],
+    "access": [
+      {"tool": "Jira", "status": "partial", "note": "Access confirmed. Team project not yet located."},
+      {"tool": "Confluence", "status": "partial", "note": "Access confirmed. Area-specific pages not yet found."},
+      {"tool": "LaunchDarkly", "status": "pending", "note": "Claims access. Provisioning not confirmed — verify with eng team lead."},
+      {"tool": "Roadmap Dashboards", "status": "not_started", "note": "Location unknown. Ask Vijay or Aisha Patel."},
+      {"tool": "Master R&D Calendar", "status": "not_started", "note": "Ask Aisha Patel on Slack."}
+    ],
+    "session_log": [
+      {
+        "session": 1,
+        "date": "2026-05-15",
+        "covered": "Access check (all 5 tools), relationship map, core reading list with direct links, operating model walkthrough, BURP introduced",
+        "deferred": "Onboarding site debrief, Jira hierarchy exercise, relationship debriefs (no meetings completed yet)",
+        "gaps_logged": 4,
+        "sentiment": "Positive. Understands strategic framing. Uncertain about de-identification certification process and EHR data model depth."
+      }
+    ],
+    "closing_reflections": {
+      "most_solid_on": "Strategic framing — understands why the platform exists, what the commercial rationale is, and why compliance is a design constraint rather than a gate.",
+      "most_uncertain_about": "De-identification certification process and how Legal/Privacy relationship works day-to-day in the design phase.",
+      "unprepared_for": "EHR data model depth — gap is larger than expected coming from BCBS claims data background."
+    }
+  }
+};
+
+// ── TRACKER RENDER ────────────────────────────────────────────────
+function trShowCohort() {
+  document.getElementById('tr-cohort-view').style.display = 'block';
+  document.getElementById('tr-detail-view').style.display = 'none';
+}
+
+function trShowPerson(id) {
+  var person = TR_PEOPLE[id];
+  if (!person) return;
+  document.getElementById('tr-cohort-view').style.display = 'none';
+  document.getElementById('tr-detail-view').style.display = 'block';
+  document.getElementById('tr-detail-content').innerHTML = trRenderDetail(person);
+}
+
+function trPhaseColor(phase) {
+  return ['var(--teal)', 'var(--amber)', 'var(--rose)', 'var(--green)'][phase - 1] || 'var(--teal)';
+}
+
+function trPriLabel(pri) {
+  if (pri === 'week_1') return '<span class="tr-pri tr-pri-w1">Week 1</span>';
+  if (pri === 'week_2') return '<span class="tr-pri tr-pri-w2">Week 2</span>';
+  return '<span class="tr-pri tr-pri-m1">Month 1</span>';
+}
+
+function trRelDot(status) {
+  if (status === 'done' || status === 'complete') return '<span class="tr-dot tr-dot-done"></span>Done';
+  if (status === 'scheduled') return '<span class="tr-dot tr-dot-sched"></span>Scheduled';
+  if (status === 'overdue') return '<span class="tr-dot tr-dot-over"></span>Overdue';
+  return '<span class="tr-dot tr-dot-pend"></span>Not yet';
+}
+
+function trRenderDetail(p) {
+  var html = '';
+
+  // Header
+  var phaseColors = ['var(--teal)','var(--amber)','var(--rose)','var(--green)'];
+  var phaseColor = phaseColors[(p.current_phase || 1) - 1];
+  html += '<div style="background:var(--card);border:1px solid var(--line);border-radius:var(--rlg);padding:24px 28px;margin-bottom:16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start">';
+  html += '<div>';
+  html += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:4px">' + p.manager + ' / ' + p.level + '</div>';
+  html += '<div style="font-family:\'Iowan Old Style\',Georgia,serif;font-size:1.8rem;color:var(--ink);margin-bottom:4px">' + p.name + '</div>';
+  html += '<div style="font-size:14px;color:var(--muted);margin-bottom:12px">' + p.role + '</div>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  html += '<span style="background:' + phaseColor + ';color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px">Phase ' + p.current_phase + ' — ' + (p.phase_timeline[p.current_phase - 1] || {}).label + '</span>';
+  if (p.fast_track) html += '<span style="background:var(--amber-lt);color:var(--amber);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:999px">Fast Track</span>';
+  html += '</div>';
+  html += '</div>';
+  html += '<div style="text-align:right">';
+  html += '<div style="font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Next checkpoint</div>';
+  html += '<div style="font-size:.95rem;font-weight:700;color:var(--ink)">' + (p.next_checkpoint || '—') + '</div>';
+  html += '<div style="font-size:11px;color:var(--muted)">' + (p.next_checkpoint_type || '') + '</div>';
+  html += '<div style="margin-top:10px;font-size:11px;color:var(--faint)">Start: ' + p.start_date + '</div>';
+  html += '<div style="font-size:11px;color:var(--faint)">Sessions: ' + p.session_count + '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  // Stats row
+  var openGaps = (p.knowledge_gaps || []).filter(function(g){return g.status === 'open';}).length;
+  var openItems = (p.open_items || []).filter(function(i){return i.status === 'open';}).length;
+  var relDone = (p.relationships || []).filter(function(r){return r.status === 'done' || r.status === 'complete' || r.status === 'scheduled';}).length;
+  var readDone = (p.reading || []).filter(function(r){return r.status === 'complete';}).length;
+  html += '<div class="tr-stat-row">';
+  html += '<div class="tr-stat"><div class="tr-stat-val">' + openGaps + '</div><div class="tr-stat-lbl">Open gaps</div><div class="tr-stat-sub">Knowledge gaps logged</div></div>';
+  html += '<div class="tr-stat"><div class="tr-stat-val">' + openItems + '</div><div class="tr-stat-lbl">Open items</div><div class="tr-stat-sub">Actions outstanding</div></div>';
+  html += '<div class="tr-stat"><div class="tr-stat-val">' + relDone + '</div><div class="tr-stat-lbl">Relationships</div><div class="tr-stat-sub">Done or scheduled</div></div>';
+  html += '<div class="tr-stat"><div class="tr-stat-val">' + readDone + '</div><div class="tr-stat-lbl">Reading done</div><div class="tr-stat-sub">of ' + (p.reading || []).length + ' items</div></div>';
+  html += '</div>';
+
+  // Phase bar
+  html += '<div class="tr-phase-bar">';
+  (p.phase_timeline || []).forEach(function(ph, i) {
+    var cls = 'tr-phase-step tr-p' + ph.phase;
+    var badge = '';
+    if (ph.status === 'in_progress') { cls += ' tr-active'; badge = '<span class="tr-phase-badge tr-badge-active">In Progress</span>'; }
+    else if (ph.status === 'complete') { cls += ' tr-done'; badge = '<span class="tr-phase-badge tr-badge-done">Complete</span>'; }
+    else { cls += ' tr-future'; badge = '<span class="tr-phase-badge tr-badge-future">Not started</span>'; }
+    html += '<div class="' + cls + '">';
+    html += '<div class="tr-phase-num">' + ph.phase + '</div>';
+    html += '<div class="tr-phase-lbl">' + ph.label + '</div>';
+    html += '<div class="tr-phase-wks">' + ph.weeks + '</div>';
+    html += badge;
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Checkpoint banner
+  if (p.next_checkpoint) {
+    html += '<div class="tr-cp-banner"><div class="tr-cp-icon">⏱</div><div class="tr-cp-text"><h4>30-day checkpoint approaching — ' + p.next_checkpoint + '</h4><p>Manager and new hire each complete independent assessments. Agent surfaces where reads diverge.</p></div></div>';
+  }
+
+  html += '<div class="grid2">';
+
+  // Knowledge gaps
+  html += '<div>';
+  html += '<span class="section-lbl">Knowledge gaps</span>';
+  html += '<div class="tr-gap-list">';
+  (p.knowledge_gaps || []).forEach(function(g) {
+    html += '<div class="tr-gap-item ' + (g.priority || '') + '">';
+    html += '<div class="tr-gap-name">' + g.gap + '</div>';
+    html += '<div class="tr-gap-detail">' + g.detail + '</div>';
+    html += '<div class="tr-gap-meta">Raised: ' + g.raised_in + ' &nbsp;·&nbsp; Priority: ' + (g.priority || 'medium') + ' &nbsp;·&nbsp; Status: ' + g.status + '</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  // Open items
+  html += '<div>';
+  html += '<span class="section-lbl">Open items</span>';
+  html += '<div class="tr-open-list">';
+  (p.open_items || []).forEach(function(item) {
+    var done = item.status === 'done';
+    html += '<div class="tr-open-item' + (done ? ' done' : '') + '">';
+    html += '<div class="tr-open-cb' + (done ? ' checked' : '') + '"></div>';
+    html += '<div><div class="tr-open-text">' + item.item + '</div>';
+    html += '<div class="tr-open-due">Due: ' + (item.due || '—') + '</div></div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  html += '</div>'; // /grid2
+
+  html += '<div class="grid2">';
+
+  // Reading
+  html += '<div>';
+  html += '<span class="section-lbl">Reading list</span>';
+  html += '<div class="tr-read-list">';
+  (p.reading || []).forEach(function(r) {
+    var done = r.status === 'complete';
+    html += '<div class="tr-read-item' + (done ? ' done' : '') + '">';
+    html += '<div class="tr-read-ck ' + (done ? 'done' : 'pend') + '">' + (done ? '✓' : '') + '</div>';
+    html += '<div class="tr-read-title">' + r.title + '</div>';
+    html += '<div class="tr-read-due">' + (r.due || '') + '</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  // Access
+  html += '<div>';
+  html += '<span class="section-lbl">Tool access</span>';
+  html += '<div class="tr-access-grid">';
+  (p.access || []).forEach(function(a) {
+    var dotClass = a.status === 'ok' || a.status === 'confirmed' ? 'ok' : (a.status === 'partial' ? 'partial' : 'pending');
+    html += '<div class="tr-access-item">';
+    html += '<div class="tr-access-dot ' + dotClass + '"></div>';
+    html += '<div><div class="tr-access-name">' + a.tool + '</div><div class="tr-access-note">' + a.note + '</div></div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  html += '</div>'; // /grid2
+
+  // Relationships
+  html += '<span class="section-lbl" style="margin-top:8px">Relationship map</span>';
+  html += '<div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:16px;overflow-x:auto">';
+  html += '<table class="tr-rel-table"><thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Priority</th></tr></thead><tbody>';
+  (p.relationships || []).forEach(function(r) {
+    html += '<tr><td><div class="tr-rel-name">' + r.name + '</div></td>';
+    html += '<td><span class="tr-rel-role">' + r.role + '</span></td>';
+    html += '<td>' + trRelDot(r.status) + (r.scheduled_date ? ' <span style="font-size:11px;color:var(--faint)">(' + r.scheduled_date + ')</span>' : '') + '</td>';
+    html += '<td>' + trPriLabel(r.priority) + '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // Competency signals
+  html += '<span class="section-lbl">Competency signals</span>';
+  html += '<div class="grid3" style="margin-bottom:16px">';
+  (p.competency_signals || []).forEach(function(c) {
+    html += '<div class="tr-comp-item ' + c.signal + '">';
+    html += '<div class="tr-comp-name">' + c.competency + ' <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:999px;background:' + (c.signal === 'strong' ? 'var(--green-lt);color:var(--green)' : c.signal === 'watch' ? 'var(--amber-lt);color:var(--amber)' : 'var(--teal-lt);color:var(--teal)') + '">' + c.signal + '</span></div>';
+    html += '<div class="tr-comp-note">' + c.note + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Session log
+  html += '<span class="section-lbl">Session log</span>';
+  html += '<div class="tr-sess-list" style="margin-bottom:16px">';
+  (p.session_log || []).forEach(function(s) {
+    html += '<div class="tr-sess-item">';
+    html += '<div class="tr-sess-head"><span class="tr-sess-num">Session ' + s.session + '</span><span class="tr-sess-date">' + s.date + '</span></div>';
+    html += '<div class="tr-sess-body"><strong>Covered:</strong> ' + s.covered + '<br><strong>Deferred:</strong> ' + s.deferred + '<br><strong>Gaps logged:</strong> ' + s.gaps_logged + '</div>';
+    html += '<div class="tr-sess-sent">' + s.sentiment + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Closing reflections
+  if (p.closing_reflections && p.closing_reflections.most_solid_on) {
+    html += '<span class="section-lbl">Phase 1 closing reflections</span>';
+    html += '<div class="tr-refl-list" style="margin-bottom:16px">';
+    html += '<div class="tr-refl-item"><div class="tr-refl-q">Most solid on</div><div class="tr-refl-a">' + p.closing_reflections.most_solid_on + '</div></div>';
+    html += '<div class="tr-refl-item"><div class="tr-refl-q">Most uncertain about</div><div class="tr-refl-a">' + p.closing_reflections.most_uncertain_about + '</div></div>';
+    html += '<div class="tr-refl-item"><div class="tr-refl-q">Unprepared for</div><div class="tr-refl-a">' + p.closing_reflections.unprepared_for + '</div></div>';
+    html += '</div>';
+  }
+
+  return html;
+}
+
+function trRenderCohort() {
+  // Stats
+  var s = TR_MANIFEST.stats;
+  var statsEl = document.getElementById('tr-cohort-stats');
+  if (statsEl) {
+    statsEl.innerHTML =
+      '<div class="tr-stat"><div class="tr-stat-val">' + s.active + '</div><div class="tr-stat-lbl">Active</div><div class="tr-stat-sub">New hires in program</div></div>' +
+      '<div class="tr-stat"><div class="tr-stat-val">' + s.avg_gaps + '</div><div class="tr-stat-lbl">Avg gaps</div><div class="tr-stat-sub">Per new hire</div></div>' +
+      '<div class="tr-stat"><div class="tr-stat-val">' + s.checkpoints_due + '</div><div class="tr-stat-lbl">Checkpoints</div><div class="tr-stat-sub">Due in next 30 days</div></div>' +
+      '<div class="tr-stat"><div class="tr-stat-val">' + TR_MANIFEST.cohort_label + '</div><div class="tr-stat-lbl">Cohort</div><div class="tr-stat-sub">Last updated ' + TR_MANIFEST.last_updated + '</div></div>';
+  }
+
+  // Person cards
+  var grid = document.getElementById('tr-cohort-grid');
+  if (!grid) return;
+  var html = '';
+  TR_MANIFEST.people.forEach(function(person) {
+    var hasFlags = person.flags && person.flags.length > 0;
+    var phaseColors = ['var(--teal)','var(--amber)','var(--rose)','var(--green)'];
+    var phaseColor = phaseColors[(person.current_phase || 1) - 1];
+    html += '<div class="tr-person-card' + (hasFlags ? ' flagged' : '') + '" onclick="trShowPerson(\'' + person.id + '\')">';
+    html += '<div class="tr-pcard-name">' + person.name + '</div>';
+    html += '<div class="tr-pcard-role">' + person.role + '</div>';
+    html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px">';
+    html += '<span style="background:' + phaseColor + ';color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px">Phase ' + person.current_phase + '</span>';
+    if (person.fast_track) html += '<span style="background:var(--amber-lt);color:var(--amber);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px">Fast Track</span>';
+    html += '</div>';
+    html += '<div class="tr-pcard-stats">';
+    html += '<div><div class="tr-pstat-val">' + person.open_gaps + '</div><div class="tr-pstat-lbl">Open gaps</div></div>';
+    html += '<div><div class="tr-pstat-val">' + person.open_items + '</div><div class="tr-pstat-lbl">Open items</div></div>';
+    html += '<div><div class="tr-pstat-val">' + person.session_count + '</div><div class="tr-pstat-lbl">Sessions</div></div>';
+    html += '</div>';
+    html += '<div class="tr-pcard-summary">' + person.summary_line + '</div>';
+    html += '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+// Initialize tracker when tab 5 is shown — called from showPage()
+var _trInit = false;
+</script>
+
+<script>
+function ctaCopy(btn, text, confirm_msg) {
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.textContent;
+    btn.textContent = confirm_msg;
+    btn.style.opacity = '0.85';
+    setTimeout(function() { btn.textContent = orig; btn.style.opacity = ''; }, 2500);
+  });
+}
+
+function launchTrack(track) {
+  document.getElementById('lt-nh').style.display = track === 'nh' ? 'block' : 'none';
+  document.getElementById('lt-mgr').style.display = track === 'mgr' ? 'block' : 'none';
+  document.getElementById('lt-nh-btn').classList.toggle('on', track === 'nh');
+  document.getElementById('lt-mgr-btn').classList.toggle('on', track === 'mgr');
+}
+
+function copyCmd(btn, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function showPage(n) {
+  var pages = document.querySelectorAll('.page');
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].style.display = (i === n) ? 'block' : 'none';
+  }
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('on', Number(tabs[i].dataset.page) === n);
+  }
+  if (n === 5 && !_trInit) { trRenderCohort(); _trInit = true; }
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showStage(id, el, idx) {
+  var panels = document.querySelectorAll('.stage-panel');
+  for (var i = 0; i < panels.length; i++) { panels[i].style.display = 'none'; panels[i].classList.remove('on'); }
+  var p = document.getElementById('panel-' + id);
+  if (p) { p.style.display = 'grid'; p.classList.add('on'); }
+  var steps = document.querySelectorAll('.flow-step');
+  for (var i = 0; i < steps.length; i++) { steps[i].classList.remove('active'); }
+  el.classList.add('active');
+  var colors = ['var(--teal)', 'var(--amber)', 'var(--rose)', 'var(--green)'];
+  var fill = document.getElementById('stage-fill');
+  if (fill) { fill.style.left = (idx * 25) + '%'; fill.style.background = colors[idx]; }
+}
+
+function setCompLevel(level) {
+  var cards = ['cc1','cc2','cc3','cc4','cc5','cc6'];
+  var levels = ['a','sa','m','sm','d'];
+  for (var c = 0; c < cards.length; c++) {
+    for (var l = 0; l < levels.length; l++) {
+      var el = document.getElementById(cards[c] + '-' + levels[l]);
+      if (el) el.style.display = (levels[l] === level) ? 'block' : 'none';
+    }
+  }
+  var cfg = {
+    'a':  {bg:'var(--green)',   fg:'#fff', ibg:'var(--green-lt)',  ifg:'var(--green)'},
+    'sa': {bg:'var(--teal)',    fg:'#fff', ibg:'var(--teal-lt)',   ifg:'var(--teal)'},
+    'm':  {bg:'var(--amber)',   fg:'#fff', ibg:'var(--amber-lt)',  ifg:'var(--amber)'},
+    'sm': {bg:'var(--slate)',   fg:'#fff', ibg:'var(--slate-lt)',  ifg:'var(--slate)'},
+    'd':  {bg:'var(--rose)',    fg:'#fff', ibg:'var(--rose-lt)',   ifg:'var(--rose)'}
+  };
+  for (var l = 0; l < levels.length; l++) {
+    var btn = document.getElementById('cb-' + levels[l]);
+    if (!btn) continue;
+    var active = levels[l] === level;
+    btn.style.background = active ? cfg[levels[l]].bg : cfg[levels[l]].ibg;
+    btn.style.color = active ? cfg[levels[l]].fg : cfg[levels[l]].ifg;
+    btn.style.opacity = active ? '1' : '0.75';
+  }
+}
+
+function setLCLevel(level) {
+  var stages = ['s1','s2','s3','s4'];
+  var levels = ['a','sa','m','sm','d'];
+  for (var s = 0; s < stages.length; s++) {
+    for (var l = 0; l < levels.length; l++) {
+      var show = levels[l] === level;
+      var pm = document.getElementById('lc-' + stages[s] + '-' + levels[l]);
+      if (pm) pm.style.display = show ? 'block' : 'none';
+      var up = document.getElementById('lc-' + stages[s] + '-' + levels[l] + '-up');
+      if (up) up.style.display = show ? 'block' : 'none';
+    }
+  }
+  var cfg = {
+    'a':  {bg:'var(--green)',   fg:'#fff', ibg:'var(--green-lt)',  ifg:'var(--green)'},
+    'sa': {bg:'var(--teal)',    fg:'#fff', ibg:'var(--teal-lt)',   ifg:'var(--teal)'},
+    'm':  {bg:'var(--amber)',   fg:'#fff', ibg:'var(--amber-lt)',  ifg:'var(--amber)'},
+    'sm': {bg:'var(--slate)',   fg:'#fff', ibg:'var(--slate-lt)',  ifg:'var(--slate)'},
+    'd':  {bg:'var(--rose)',    fg:'#fff', ibg:'var(--rose-lt)',   ifg:'var(--rose)'}
+  };
+  var levels2 = ['a','sa','m','sm','d'];
+  for (var l = 0; l < levels2.length; l++) {
+    var btn = document.getElementById('lb-' + levels2[l]);
+    if (!btn) continue;
+    var active = levels2[l] === level;
+    btn.style.background = active ? cfg[levels2[l]].bg : cfg[levels2[l]].ibg;
+    btn.style.color = active ? cfg[levels2[l]].fg : cfg[levels2[l]].ifg;
+    btn.style.opacity = active ? '1' : '0.75';
+  }
+}
+
+function jumpLevel(id) {
+  var el = document.getElementById('level-' + id);
+  if (el) {
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.style.outline = '2px solid var(--teal)';
+    setTimeout(function() { el.style.outline = ''; }, 1800);
+  }
+}
+</script>
+</body>
+</html>

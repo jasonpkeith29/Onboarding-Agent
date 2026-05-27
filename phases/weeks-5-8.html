@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Phase 3: Execute — Weeks 5-8 | DEP PM Onboarding</title>
+<link rel="stylesheet" href="../assets/styles.css"/>
+</head>
+<body>
+<div class="shell">
+
+<nav class="topnav">
+  <div class="brand">DEP Data &amp; Ecosystem <span>PM Onboarding</span></div>
+  <div class="tabs">
+    <a class="tab" href="../index.html">The Role</a>
+    <a class="tab" href="../index.html">Competencies &amp; Expectations</a>
+    <a class="tab" href="../index.html">Lifecycle &amp; Ownership</a>
+    <a class="tab on" href="../index.html">Your Onboarding</a>
+    <a class="tab" href="../index.html">Enter the Experience</a>
+  </div>
+</nav>
+
+<a class="back-link" href="../index.html">&#8592; Back to onboarding overview</a>
+
+<div class="phase-nav">
+  <a href="weeks-1-2.html">Weeks 1–2: Orient</a>
+  <a href="weeks-3-4.html">Weeks 3–4: Learn</a>
+  <a href="weeks-5-8.html" class="current">Weeks 5–8: Execute</a>
+  <a href="month-3-plus.html">Month 3+: Operate</a>
+</div>
+
+<div class="phase-hero phase-hero-3">
+  <div class="phase-week-badge">
+    <div class="phase-num phase-num-3">3</div>
+    <div>
+      <span class="eye" style="color:var(--rose);margin-bottom:3px">Phase 3 — Layer 3 DEP Onboarding</span>
+      <div style="font-size:13px;color:var(--muted)">Weeks 5–8</div>
+    </div>
+  </div>
+  <h1 style="margin-bottom:10px">Execute: Own Your First Deliverables</h1>
+  <p>The scaffolding is still there, but you're building now. Phase 3 is about transitioning from learning to doing — producing your first real artifacts, getting feedback on them, and understanding where you're strong and where you need to develop. By the end of week eight, you'll have a vision statement, a PRD draft, a BURP epic, and a story set. Not theoretical — actual.</p>
+</div>
+
+<div class="banner" style="background:linear-gradient(135deg,var(--rose-lt),#fff);border:1px solid #e8c8cc">
+  <h3 style="margin-bottom:8px;color:var(--rose)">The principle of Phase 3</h3>
+  <p style="max-width:none">Shipping is not success. Producing an artifact is not success. The question at the end of every Phase 3 deliverable is: does this do what it needs to do? Can engineering groom from this story set without calling you? Could a new stakeholder read this vision statement and immediately understand where the area is headed? That's the bar.</p>
+</div>
+
+<span class="section-lbl">Your four Phase 3 deliverables</span>
+<div class="grid2">
+  <div class="card">
+    <span class="chip chip-teal">Deliverable 1</span>
+    <h3>Vision Statement</h3>
+    <p style="margin-bottom:10px">A 2-4 sentence articulation of what your product area is for, who it serves, and why it matters. This is a forcing function — it makes you commit to a strategic direction in writing so you can test and refine it in real conversations.</p>
+    <p style="font-size:13px">The agent guides you through 5 questions, then drafts the statement from your answers. You refine it. It gets saved.</p>
+    <p style="font-size:12px;color:var(--faint);margin-top:8px">Agent task: /agent/tasks/vision-statement.md</p>
+  </div>
+  <div class="card">
+    <span class="chip chip-amber">Deliverable 2</span>
+    <h3>PRD Draft</h3>
+    <p style="margin-bottom:10px">A full PRD draft for a real feature in your current roadmap — problem statement, stakeholder context, evidence, proposed solution, success metrics, dependencies, risks, and acceptance criteria. Assessed against the zone quality bar.</p>
+    <p style="font-size:13px">The agent guides you through 7 questions, generates the draft, and flags missing or weak fields explicitly.</p>
+    <p style="font-size:12px;color:var(--faint);margin-top:8px">Agent task: /agent/tasks/prd-draft.md</p>
+  </div>
+  <div class="card">
+    <span class="chip chip-rose">Deliverable 3</span>
+    <h3>BURP Epic Summary</h3>
+    <p style="margin-bottom:10px">A Sprint 0-ready epic summary with problem statement, success metrics, scope definition, dependency status, and risk/mitigation plan. The document you'd bring into BURP to show up prepared rather than reactive.</p>
+    <p style="font-size:13px">The agent walks you through 7 BURP questions and generates the summary. Flags pre-BURP readiness gaps.</p>
+    <p style="font-size:12px;color:var(--faint);margin-top:8px">Agent task: /agent/tasks/burp-epic.md</p>
+  </div>
+  <div class="card">
+    <span class="chip chip-green">Deliverable 4</span>
+    <h3>Story Set</h3>
+    <p style="margin-bottom:10px">3-5 user stories for a feature in your current or upcoming sprint — in sprint-ready condition. As a / I want / So that, testable AC in Given/When/Then format, and a definition of done that's specific to the story, not boilerplate.</p>
+    <p style="font-size:13px">The agent walks you through context questions, helps write each story, and runs an engineering clarity check at the end.</p>
+    <p style="font-size:12px;color:var(--faint);margin-top:8px">Agent task: /agent/tasks/story-set.md</p>
+  </div>
+</div>
+
+<span class="section-lbl">The quality bar — what these artifacts need to achieve</span>
+<div class="detail-section">
+  <h3>Zone standards for Manager-level artifacts</h3>
+  <div class="grid3" style="margin-bottom:0">
+    <div style="background:var(--teal-lt);border:1px solid #c2dedd;border-radius:var(--r);padding:16px">
+      <strong style="color:var(--teal);font-size:13px;display:block;margin-bottom:8px">Vision Statement Quality Bar</strong>
+      <ul style="font-size:13px">
+        <li>Names a specific stakeholder and their workflow (not generic categories)</li>
+        <li>Describes a real problem, not a feature set</li>
+        <li>Is directional without being vague</li>
+        <li>Grounded in a strategic rationale specific to DEP</li>
+        <li>Can be said in a conversation without reading from a card</li>
+      </ul>
+    </div>
+    <div style="background:var(--amber-lt);border:1px solid #e8d0b8;border-radius:var(--r);padding:16px">
+      <strong style="color:var(--amber);font-size:13px;display:block;margin-bottom:8px">PRD Quality Bar</strong>
+      <ul style="font-size:13px">
+        <li>Problem statement names stakeholder, workflow, and pain point with evidence</li>
+        <li>Success metrics specific, measurable, defined pre-launch</li>
+        <li>Dependencies named with owners and statuses confirmed</li>
+        <li>AC in Given/When/Then format, including error states</li>
+        <li>Explicit out-of-scope section</li>
+        <li>Engineering can groom from this without PM present</li>
+      </ul>
+    </div>
+    <div style="background:var(--green-lt);border:1px solid #b8dbc8;border-radius:var(--r);padding:16px">
+      <strong style="color:var(--green);font-size:13px;display:block;margin-bottom:8px">Story Quality Bar</strong>
+      <ul style="font-size:13px">
+        <li>"So that" describes a business outcome, not a feature</li>
+        <li>AC testable in Given/When/Then format</li>
+        <li>Error states and edge cases have explicit AC</li>
+        <li>Definition of Done is story-specific, not boilerplate</li>
+        <li>Engineering lead can groom without PM walking through every card</li>
+        <li>No story scoped beyond a single sprint</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<span class="section-lbl">What your manager is watching for — by level</span>
+<div class="detail-section">
+  <h3>Manager watch-fors in Phase 3</h3>
+  <div class="grid2" style="margin-bottom:0">
+    <div>
+      <div class="watch-for-block">
+        <h5 style="color:var(--green)">Associate</h5>
+        <ul>
+          <li>Is the PM producing artifacts that improve with each iteration, or repeating the same gaps?</li>
+          <li>Are they seeking feedback proactively, or waiting to be reviewed?</li>
+          <li>Are they distinguishing between what a stakeholder asks for and what the problem actually is?</li>
+        </ul>
+      </div>
+      <div class="watch-for-block">
+        <h5 style="color:var(--teal)">Sr. Associate</h5>
+        <ul>
+          <li>Are their stories arriving at grooming in sprint-ready condition?</li>
+          <li>Are their AC specific enough for engineering to execute without follow-up?</li>
+          <li>Are they contributing to ceremonies, not just attending them?</li>
+        </ul>
+      </div>
+      <div class="watch-for-block">
+        <h5 style="color:var(--amber)">Manager</h5>
+        <ul>
+          <li>Is the artifact quality meeting the zone bar? Where specifically is it falling short?</li>
+          <li>Is the PM being chased by PrOps for Jira hygiene, or maintaining it proactively?</li>
+          <li>Does the vision statement show real strategic thinking, or is it generic?</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="watch-for-block">
+        <h5 style="color:var(--slate)">Sr. Manager</h5>
+        <ul>
+          <li>Is the Sr. Manager setting a quality bar for their own work that they'd hold others to?</li>
+          <li>Are they using Phase 3 to build their own strategic narrative, not just execute tasks?</li>
+          <li>Are they identifying process gaps and suggesting improvements?</li>
+        </ul>
+      </div>
+      <div class="watch-for-block">
+        <h5 style="color:var(--rose)">Director / ED</h5>
+        <ul>
+          <li>Is the Director using Phase 3 to establish their zone-level vision, not just produce individual artifacts?</li>
+          <li>Are they already engaging at the right stakeholder level for their role?</li>
+          <li>Are they setting expectations for quality across the zone, not just modeling it themselves?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<span class="section-lbl">Phase 3 deliverables and close</span>
+<div class="detail-section">
+  <h3>What should be true by the end of week 8</h3>
+  <ul class="deliverable-list">
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>Vision statement drafted, refined, and shared with your manager and at least one key partner</div>
+    </li>
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>PRD draft completed and assessed against the zone quality bar — gaps identified and addressed or flagged</div>
+    </li>
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>BURP epic summary ready for your next Sprint 0 session — all seven sections complete</div>
+    </li>
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>Story set written and reviewed with engineering lead — engineering clarity check passed</div>
+    </li>
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>Roadmap data and GA readiness fields contributed before a PrOps deadline (without being chased)</div>
+    </li>
+    <li>
+      <div class="deliverable-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>Phase 3 Learning Summary generated in the Claude Code agent, ready for the 60-day manager checkpoint</div>
+    </li>
+  </ul>
+</div>
+
+<div class="phase-nav" style="margin-top:8px">
+  <a href="weeks-3-4.html">&#8592; Weeks 3–4: Learn</a>
+  <a href="weeks-5-8.html" class="current">Weeks 5–8: Execute</a>
+  <a href="month-3-plus.html">Month 3+: Operate →</a>
+</div>
+
+</div>
+<script src="../assets/scripts.js"></script>
+</body>
+</html>
